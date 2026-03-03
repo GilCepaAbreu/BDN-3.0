@@ -9514,6 +9514,11 @@
             opacity: 0;
         }
     </style>
+
+    <!-- Chroma Grid Gallery -->
+    <link rel="stylesheet" href="chroma_grid.css">
+    <script src="chroma_grid.js"></script>
+</head>
 </head>
 
 <body id="home">
@@ -9548,7 +9553,7 @@
     </div>
 
     <!-- Botão de Alternância de Tema - Canto Inferior Direito -->
-    <div class="theme-toggle-fixed" id="theme-toggle" title="Alternar Tema">
+    <div class="theme-toggle-fixed" id="theme-toggle" title="Alternar Tema" style="display: none !important;">
         <div class="theme-toggle-icon">
             <div class="theme-circle"></div>
         </div>
@@ -9628,9 +9633,12 @@
                     </div>
 
                     <div class="hero-animated-words">
-                        <div class="hero-word" id="word-projetamos">PROJETAMOS</div>
-                        <div class="hero-word" id="word-arquitetamos">ARQUITETAMOS</div>
-                        <div class="hero-word" id="word-construimos">CONSTRUÍMOS</div>
+                        <div class="hero-word" id="word-projetamos" data-translate="section_projetamos_title">PROJETAMOS
+                        </div>
+                        <div class="hero-word" id="word-arquitetamos" data-translate="section_arquitetamos_title">
+                            ARQUITETAMOS</div>
+                        <div class="hero-word" id="word-construimos" data-translate="section_construimos_title">
+                            CONSTRUÍMOS</div>
                     </div>
                 </div>
             </div>
@@ -9917,8 +9925,8 @@
             </script>
         </section>
 
-        <!-- Galeria AAMP Style -->
-        <section class="aamp-gallery-section">
+        <!-- Galeria AAMP Style (Primeira Metade) -->
+        <section class="aamp-gallery-section" style="padding-bottom: 40px;">
             <div class="aamp-gallery-container">
                 <!-- Coluna Esquerda -->
                 <div class="aamp-gallery-column">
@@ -9931,12 +9939,6 @@
                     <div class="aamp-gallery-item" style="width: 100%;">
                         <img src="imagens/arquitetamos/habitacao4.png" alt="Construção BDN" class="aamp-gallery-img">
                     </div>
-                    <div class="aamp-gallery-item" style="width: 80%; margin-right: 20%;">
-                        <img src="imagens/arquitetamos/habitacao5.png" alt="Construção BDN" class="aamp-gallery-img">
-                    </div>
-                    <div class="aamp-gallery-item" style="width: 95%; margin-left: 5%;">
-                        <img src="imagens/arquitetamos/habitacao6.png" alt="Projeto BDN" class="aamp-gallery-img">
-                    </div>
                 </div>
                 <!-- Coluna Direita (com espaçamento em cima estilo staggered) -->
                 <div class="aamp-gallery-column" style="margin-top: clamp(6rem, 20vw, 15rem);">
@@ -9948,12 +9950,6 @@
                     </div>
                     <div class="aamp-gallery-item" style="width: 90%; margin-right: 10%;">
                         <img src="imagens/arquitetamos/habitacao9.png" alt="Projeto BDN" class="aamp-gallery-img">
-                    </div>
-                    <div class="aamp-gallery-item" style="width: 80%; margin-left: 20%;">
-                        <img src="imagens/arquitetamos/habitacao10.png" alt="Arquitetura BDN" class="aamp-gallery-img">
-                    </div>
-                    <div class="aamp-gallery-item" style="width: 95%;">
-                        <img src="imagens/arquitetamos/habitacao11.png" alt="Construção BDN" class="aamp-gallery-img">
                     </div>
                 </div>
             </div>
@@ -10073,12 +10069,12 @@
 
         <section class="target-categories-section">
             <div class="target-buttons-container">
-                <button class="target-btn target-cursor-hover projetamos-gallery-trigger"
-                    id="btn-projetamos">Projetamos</button>
-                <button class="target-btn target-cursor-hover arquitetamos-gallery-trigger"
-                    id="btn-arquitetamos">Arquitetamos</button>
-                <button class="target-btn target-cursor-hover construimos-gallery-trigger"
-                    id="btn-construimos">Construímos</button>
+                <button class="target-btn target-cursor-hover projetamos-gallery-trigger" id="btn-projetamos"
+                    data-translate="nav_projects1">Projetamos</button>
+                <button class="target-btn target-cursor-hover arquitetamos-gallery-trigger" id="btn-arquitetamos"
+                    data-translate="nav_projects2">Arquitetamos</button>
+                <button class="target-btn target-cursor-hover construimos-gallery-trigger" id="btn-construimos"
+                    data-translate="nav_projects3">Construímos</button>
             </div>
         </section>
 
@@ -10183,6 +10179,31 @@
             });
         </script>
 
+
+
+        <!-- Galeria AAMP Style (Segunda Metade) -->
+        <section class="aamp-gallery-section" style="padding-top: 40px;">
+            <div class="aamp-gallery-container">
+                <!-- Coluna Esquerda -->
+                <div class="aamp-gallery-column">
+                    <div class="aamp-gallery-item" style="width: 80%; margin-right: 20%;">
+                        <img src="imagens/arquitetamos/habitacao5.png" alt="Construção BDN" class="aamp-gallery-img">
+                    </div>
+                    <div class="aamp-gallery-item" style="width: 95%; margin-left: 5%;">
+                        <img src="imagens/arquitetamos/habitacao6.png" alt="Projeto BDN" class="aamp-gallery-img">
+                    </div>
+                </div>
+                <!-- Coluna Direita -->
+                <div class="aamp-gallery-column" style="margin-top: clamp(3rem, 10vw, 8rem);">
+                    <div class="aamp-gallery-item" style="width: 80%; margin-left: 20%;">
+                        <img src="imagens/arquitetamos/habitacao10.png" alt="Arquitetura BDN" class="aamp-gallery-img">
+                    </div>
+                    <div class="aamp-gallery-item" style="width: 95%;">
+                        <img src="imagens/arquitetamos/habitacao11.png" alt="Construção BDN" class="aamp-gallery-img">
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- CTA Section Animada -->
         <section id="cta-section" class="cta-banner">
@@ -10308,9 +10329,9 @@
 
             <div class="magnet-wrapper" id="magnetWrapper">
                 <div class="magnet-inner" id="magnetInner">
-                    <h2 class="cta-banner-title" data-translate="cta_title">Ready to Transform Your Space?</h2>
-                    <button class="cta-banner-btn" id="openContactModal" data-translate="cta_button">START YOUR
-                        PROJECT</button>
+                    <h2 class="cta-banner-title" data-translate="cta_title">Pronto para Transformar o Seu Espaço?</h2>
+                    <button class="cta-banner-btn" id="openContactModal" data-translate="cta_button">INICIAR O SEU
+                        PROJETO</button>
                 </div>
             </div>
         </section>
@@ -11117,6 +11138,10 @@
             const themeToggle = document.getElementById('theme-toggle');
             const body = document.body;
 
+            // Evitar múltiplas inicializações
+            if (themeToggle && themeToggle.dataset.initialized) return;
+            if (themeToggle) themeToggle.dataset.initialized = 'true';
+
             // Verificar se há tema salvo no localStorage
             const savedTheme = localStorage.getItem('bdn-theme') || 'default';
 
@@ -11819,21 +11844,63 @@
                 if (currentDomeInst) {
                     if (currentDomeInst.destroy) currentDomeInst.destroy();
                     currentDomeInst = null;
-                    dc.innerHTML = ''; // Limpar galeria anterior
                 }
+                dc.innerHTML = '';
                 if (domeModalEl) {
                     domeModalEl.classList.add('show');
                     document.body.style.overflow = 'hidden';
                 }
-                if (window.VanillaMasonryGallery) {
-                    currentDomeInst = new VanillaMasonryGallery(dc, imagesArray);
-                }
+
+                // Clear previous classes
+                dc.className = '';
+
+                // Create masonry grid
+                const grid = document.createElement('div');
+                grid.className = 'modal-gallery-grid';
+
+                // Varied styles for asymmetry
+                const heights = ['280px', '450px', '320px', '520px', '380px', '600px', '420px', '300px', '480px'];
+                const marginsTop = ['0', '2rem', '0', '3rem', '1rem', '4rem', '0', '2rem', '1.5rem'];
+                const marginsBottom = ['3rem', '4rem', '5rem', '2rem', '6rem', '3rem', '4.5rem', '2rem', '4rem'];
+
+                imagesArray.forEach((img, idx) => {
+                    const card = document.createElement('div');
+                    card.className = 'modal-project-card';
+
+                    const randomHeight = heights[idx % heights.length];
+                    const randomMarginTop = marginsTop[idx % marginsTop.length];
+                    const randomMarginBottom = marginsBottom[idx % marginsBottom.length];
+
+                    card.style.marginTop = randomMarginTop;
+                    card.style.marginBottom = randomMarginBottom;
+
+                    card.innerHTML = `
+                        <div class="modal-project-image" style="height: ${randomHeight};">
+                            <img src="${img.src || img.image || ''}" alt="${img.alt || img.caption || ''}" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    `;
+
+                    // Custom cursor hover effect
+                    const cursor = document.getElementById('customCursor') || document.querySelector('.custom-cursor');
+                    if (cursor) {
+                        card.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                        card.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+                    }
+
+                    grid.appendChild(card);
+                });
+
+                dc.appendChild(grid);
             }
 
             if (domeCloseBtn) {
                 domeCloseBtn.addEventListener('click', () => {
                     domeModalEl.classList.remove('show');
                     document.body.style.overflow = '';
+                    if (currentDomeInst) {
+                        if (currentDomeInst.destroy) currentDomeInst.destroy();
+                        currentDomeInst = null;
+                    }
                     setTimeout(() => { document.getElementById('dome-container').innerHTML = ''; }, 400);
                 });
             }
@@ -12089,9 +12156,6 @@
 
         // Event listeners para o menu mobile
         document.addEventListener('DOMContentLoaded', function () {
-            // Inicializar sistema de tema
-            initThemeToggle();
-
             // Otimizar imagens para mobile
             optimizeMobileImages();
 
@@ -12414,9 +12478,6 @@
 
         // Inicializar o efeito quando o DOM estiver carregado
         document.addEventListener('DOMContentLoaded', function () {
-            // Inicializar sistema de tema
-            initThemeToggle();
-
             // Divisor effect removed
             initTaglineScrollEffect();
         });
@@ -12708,6 +12769,7 @@
                 nav_projects2: "Arquitetamos",
                 nav_projects3: "Construímos",
                 nav_about: "Sobre BDN",
+                nav_portfolio: "Portfólio",
                 nav_contact: "Contacto",
                 dropdown_tagline: "Projetamos | Arquitetamos | Construímos",
                 hero_motto: "PROJETAMOS | ARQUITETAMOS | CONSTRUÍMOS",
@@ -12763,6 +12825,7 @@
                 unique_client: "CLIENTE",
                 unique_is: "É",
                 unique_unique: "ÚNICO",
+                unique_client_phrase: "CADA CLIENTE É ÚNICO",
                 ver_mais_projetos: "Ver mais Projetos",
 
                 // Seções Fullscreen
@@ -12793,7 +12856,11 @@
                 construimos_feature3_title: "Qualidade Garantida",
                 construimos_feature3_desc: "Standards elevados em todos os processos",
 
-                contact_subtitle: "Estamos aqui para transformar as suas ideias em realidade"
+                contact_subtitle: "Estamos aqui para transformar as suas ideias em realidade",
+                cta_title: "Pronto para Transformar o Seu Espaço?",
+                cta_button: "INICIAR O SEU PROJETO",
+                contact_info_title: "Contacto",
+                contact_info_subtitle: "Entre em contacto connosco através dos seguintes meios"
             },
             en: {
                 nav_home: "Home",
@@ -12801,6 +12868,7 @@
                 nav_projects2: "We architect",
                 nav_projects3: "We build",
                 nav_about: "About BDN",
+                nav_portfolio: "Portfolio",
                 nav_contact: "Contact",
                 dropdown_tagline: "We Design | We Architect | We Build",
                 hero_motto: "WE DESIGN | WE ARCHITECT | WE BUILD",
@@ -12856,6 +12924,7 @@
                 unique_client: "CLIENT",
                 unique_is: "IS",
                 unique_unique: "UNIQUE",
+                unique_client_phrase: "EACH CLIENT IS UNIQUE",
                 ver_mais_projetos: "View More Projects",
 
                 // Fullscreen Sections
@@ -12886,7 +12955,11 @@
                 construimos_feature3_title: "Guaranteed Quality",
                 construimos_feature3_desc: "High standards in all processes",
 
-                contact_subtitle: "We are here to transform your ideas into reality"
+                contact_subtitle: "We are here to transform your ideas into reality",
+                cta_title: "Ready to Transform Your Space?",
+                cta_button: "START YOUR PROJECT",
+                contact_info_title: "Contact",
+                contact_info_subtitle: "Get in touch with us through the following channels"
             }
         };
 
@@ -12907,8 +12980,11 @@
                 const languageButtons = document.querySelectorAll('.language-btn');
                 languageButtons.forEach(btn => {
                     btn.addEventListener('click', (e) => {
-                        const newLang = e.target.getAttribute('data-lang');
-                        this.setLanguage(newLang);
+                        const target = e.currentTarget || e.target;
+                        const newLang = target.getAttribute('data-lang');
+                        if (newLang) {
+                            this.setLanguage(newLang);
+                        }
                     });
                 });
             }
@@ -13477,23 +13553,23 @@
             <div class="sm-panel-inner">
                 <ul class="sm-panel-list" style="counter-reset: smItem;">
                     <li class="sm-panel-itemWrap">
-                        <a class="sm-panel-item" href="#home" data-translate="nav_home">
-                            <span class="sm-panel-itemLabel">Início</span>
+                        <a class="sm-panel-item" href="#home">
+                            <span class="sm-panel-itemLabel" data-translate="nav_home">Início</span>
                         </a>
                     </li>
                     <li class="sm-panel-itemWrap" style="display: none;">
-                        <a class="sm-panel-item" href="#sobre-bdn" data-translate="nav_about">
-                            <span class="sm-panel-itemLabel">Sobre BDN</span>
+                        <a class="sm-panel-item" href="#sobre-bdn">
+                            <span class="sm-panel-itemLabel" data-translate="nav_about">Sobre BDN</span>
                         </a>
                     </li>
                     <li class="sm-panel-itemWrap">
-                        <a class="sm-panel-item" href="#portfolio" data-translate="nav_portfolio">
-                            <span class="sm-panel-itemLabel">Portfólio</span>
+                        <a class="sm-panel-item" href="#portfolio">
+                            <span class="sm-panel-itemLabel" data-translate="nav_portfolio">Portfólio</span>
                         </a>
                     </li>
                     <li class="sm-panel-itemWrap">
-                        <a class="sm-panel-item" href="#contato" data-translate="nav_contact">
-                            <span class="sm-panel-itemLabel">Contacto</span>
+                        <a class="sm-panel-item" href="#contato">
+                            <span class="sm-panel-itemLabel" data-translate="nav_contact">Contacto</span>
                         </a>
                     </li>
                 </ul>
@@ -13703,9 +13779,76 @@
             width: 100%;
             height: 100%;
             position: relative;
-            padding: 60px 40px;
-            /* Some padding for close button & sides */
+            padding: 80px 40px 40px;
             box-sizing: border-box;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* Modal Normal Gallery Grid */
+        .modal-gallery-grid {
+            column-count: 3;
+            column-gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .modal-project-card {
+            break-inside: avoid;
+            margin-bottom: 2rem;
+            background: transparent;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            display: inline-block;
+            width: 100%;
+        }
+
+        .modal-project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.3);
+            border-color: #ffd700;
+        }
+
+        .modal-project-image {
+            width: 100%;
+            background: #050505;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #cccccc;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-project-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .modal-project-card:hover .modal-project-image img {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 1024px) {
+            .modal-gallery-grid {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .modal-gallery-grid {
+                column-count: 1;
+                column-gap: 0;
+            }
+
+            #dome-container {
+                padding: 70px 20px 20px;
+            }
         }
     </style>
     <script src="bdn_masonry.js"></script>
