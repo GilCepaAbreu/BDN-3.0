@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>BDN - Galeria de Projetos</title>
+    <link rel="icon" type="image/png" href="bdn_fabicon.png">
+    <link rel="shortcut icon" type="image/png" href="bdn_fabicon.png">
+    <link rel="apple-touch-icon" href="bdn_fabicon.png">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive:wght@400..700&family=Michroma&family=Oswald:wght@200..700&family=Bebas+Neue&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+            font-family: 'Oswald', 'Montserrat', sans-serif;
+        }
+
+        /* Sistema de Cores - Tema Padrão e Inverso */
+        :root {
+            /* Tema Padrão (Preto e Amarelo) */
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #050505;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --accent-primary: #ffd700;
+            --accent-secondary: #ffed4e;
+            --accent-tertiary: #b8860b;
+            --border-color: #ffd700;
+            --shadow-color: rgba(255, 215, 0, 0.3);
+            --gradient-start: #0a0a0a;
+            --gradient-end: #1a1a1a;
+            --overlay-bg: rgba(255, 215, 0, 0.1);
+            --hover-glow: rgba(255, 215, 0, 0.5);
+        }
+
+        [data-theme="inverted"] {
+            /* Tema Inverso (Amarelo e Preto) */
+            --bg-primary: #ffd700;
+            --bg-secondary: #ffed4e;
+            --bg-tertiary: #fff8dc;
+            --text-primary: #1a1a1a;
+            --text-secondary: #2d2d2d;
+            --accent-primary: #1a1a1a;
+            --accent-secondary: #0a0a0a;
+            --accent-tertiary: #333333;
+            --border-color: #1a1a1a;
+            --shadow-color: rgba(26, 26, 26, 0.3);
+            --gradient-start: #ffd700;
+            --gradient-end: #ffed4e;
+            --overlay-bg: rgba(26, 26, 26, 0.1);
+            --hover-glow: rgba(26, 26, 26, 0.5);
+        }
+
+        /* Cursor personalizado */
+        body,
+        html {
+            cursor: none;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background 0.5s ease, color 0.5s ease;
+            margin: 0;
+            padding: 0;
+            border: none;
+            outline: none;
+        }
+
+        [data-theme="inverted"] body,
+        [data-theme="inverted"] html {
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            background: var(--bg-primary) !important;
+        }
+
+        [data-theme="inverted"] .main-content {
+            margin-top: 0 !important;
+            padding-top: 2rem !important;
+        }
+
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, var(--accent-primary) 0%, var(--accent-secondary) 70%, var(--accent-tertiary) 100%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.1s ease, background 0.5s ease, opacity 0.3s ease, visibility 0.3s ease;
+            box-shadow: 0 0 15px var(--shadow-color), 0 0 30px var(--shadow-color);
+            animation: pulseTheme 2s infinite;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        .custom-cursor.hidden {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transform: scale(0) !important;
+        }
+
+        .custom-cursor.hover {
+            transform: scale(1.5);
+            background: radial-gradient(circle, var(--accent-primary) 0%, var(--accent-secondary) 70%, var(--accent-tertiary) 100%);
+            box-shadow: 0 0 25px var(--hover-glow), 0 0 50px var(--hover-glow);
+            animation: pulseHoverTheme 1s infinite;
+        }
+
+        @keyframes pulseTheme {
+            0% {
+                box-shadow: 0 0 15px var(--shadow-color), 0 0 30px var(--shadow-color);
+                opacity: 1;
+            }
+
+            50% {
+                box-shadow: 0 0 25px var(--hover-glow), 0 0 40px var(--hover-glow);
+                opacity: 0.8;
+            }
+
+            100% {
+                box-shadow: 0 0 15px var(--shadow-color), 0 0 30px var(--shadow-color);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulseHoverTheme {
+
+            0%,
+            100% {
+                box-shadow: 0 0 25px var(--hover-glow), 0 0 50px var(--hover-glow);
+            }
+
+            50% {
+                box-shadow: 0 0 35px var(--hover-glow), 0 0 60px var(--hover-glow);
+            }
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: transparent !important;
+            backdrop-filter: none;
+            z-index: 1000;
+            padding: 2rem 0 1rem 2rem;
+            border-bottom: none;
+            border-top: none;
+            box-shadow: none;
+            margin: 0;
+        }
+
+        [data-theme="inverted"] .header {
+            background: transparent !important;
+            border: none;
+            box-shadow: none;
+        }
+
+        [data-theme="inverted"]::before {
+            display: none !important;
+        }
+
+        [data-theme="inverted"] body::before,
+        [data-theme="inverted"] html::before {
+            display: none !important;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            max-width: none;
+            margin: 0;
+            width: 100%;
+        }
+
+        .logo-favicon {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .logo-favicon:hover {
+            transform: scale(1.1);
+            cursor: none !important;
+        }
+
+        .logo-favicon {
+            cursor: none !important;
+        }
+
+        .logo-favicon img {
+            height: 80px;
+            width: 80px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .logo-favicon:hover img {
+            opacity: 0;
+            transform: scale(0.8) rotate(-15deg);
+        }
+
+        .logo-favicon::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(0) rotate(180deg);
+            width: 60px;
+            height: 60px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cdefs%3E%3ClinearGradient id='arrowGrad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FFD700;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%23FFED4E;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23FFA500;stop-opacity:1' /%3E%3C/linearGradient%3E%3Cfilter id='glow' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur stdDeviation='3' result='coloredBlur'/%3E%3CfeMerge%3E%3CfeMergeNode in='coloredBlur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M35 15L20 30L35 45L32 48L14 30L32 12Z' fill='url(%23arrowGrad)' stroke='%23B8860B' stroke-width='2' filter='url(%23glow)'/%3E%3Cpath d='M33 17L22 30L33 43L30 45L16 30L30 15Z' fill='%23FFF' opacity='0.4'/%3E%3C/svg%3E") center/contain no-repeat;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            filter: drop-shadow(0 4px 8px rgba(255, 215, 0, 0.4));
+        }
+
+        .logo-favicon:hover::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        }
+
+        [data-theme="inverted"] .logo-favicon img {
+            filter: drop-shadow(0 2px 4px rgba(255, 255, 255, 0.2));
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 50%;
+            padding: 8px;
+        }
+
+        [data-theme="inverted"] .logo-favicon::after {
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cdefs%3E%3ClinearGradient id='arrowGradDark' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FFD700;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%23FFED4E;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23FFA500;stop-opacity:1' /%3E%3C/linearGradient%3E%3Cfilter id='glowDark' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur stdDeviation='4' result='coloredBlur'/%3E%3CfeMerge%3E%3CfeMergeNode in='coloredBlur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M35 15L20 30L35 45L32 48L14 30L32 12Z' fill='url(%23arrowGradDark)' stroke='%23B8860B' stroke-width='2' filter='url(%23glowDark)'/%3E%3Cpath d='M33 17L22 30L33 43L30 45L16 30L30 15Z' fill='%23FFF' opacity='0.6'/%3E%3C/svg%3E") center/contain no-repeat;
+            filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.6));
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle-fixed {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        .theme-toggle-fixed:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px var(--shadow-color);
+        }
+
+        .theme-circle {
+            width: 24px;
+            height: 24px;
+            background: var(--bg-primary);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="inverted"] .theme-circle {
+            background: var(--accent-primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .gallery-header {
+            text-align: center;
+            padding: 4rem 0 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .gallery-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .gallery-subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* Categories Filter */
+        .categories-filter {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 0.8rem 1.5rem;
+            background: transparent;
+            border: 2px solid var(--accent-primary);
+            color: var(--accent-primary);
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            column-count: 3;
+            column-gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .project-card {
+            break-inside: avoid;
+            margin-bottom: 2rem;
+            background: transparent;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            display: inline-block;
+            width: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px var(--shadow-color);
+            border-color: var(--accent-primary);
+        }
+
+        .project-image {
+            width: 100%;
+            background: var(--bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.05);
+        }
+
+        /* Responsividade */
+        @media (max-width: 1024px) {
+            .gallery-grid {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1.5rem 0 0.8rem 1rem;
+            }
+
+            .header-content {
+                padding: 0;
+            }
+
+            .logo-favicon img {
+                height: 64px;
+                width: 64px;
+            }
+
+            .logo-favicon::after {
+                width: 48px;
+                height: 48px;
+                background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='arrowGradMobile' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FFD700;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%23FFED4E;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23FFA500;stop-opacity:1' /%3E%3C/linearGradient%3E%3Cfilter id='glowMobile' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur stdDeviation='2' result='coloredBlur'/%3E%3CfeMerge%3E%3CfeMergeNode in='coloredBlur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M28 12L16 24L28 36L25 39L11 24L25 9Z' fill='url(%23arrowGradMobile)' stroke='%23B8860B' stroke-width='1.5' filter='url(%23glowMobile)'/%3E%3Cpath d='M26 14L18 24L26 34L23 36L13 24L23 12Z' fill='%23FFF' opacity='0.4'/%3E%3C/svg%3E") center/contain no-repeat;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .gallery-grid {
+                column-count: 1;
+                column-gap: 0;
+            }
+
+            .categories-filter {
+                gap: 0.5rem;
+            }
+
+            .category-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .theme-toggle-fixed {
+                bottom: 1rem;
+                right: 1rem;
+                width: 50px;
+                height: 50px;
+            }
+
+            .theme-circle {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        /* Lightbox Styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .lightbox.show {
+            display: flex;
+            opacity: 1;
+            visibility: visible;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Esconder cursor personalizado quando lightbox estiver ativo */
+        .lightbox.show~.custom-cursor {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Alternativa: esconder cursor quando body tiver classe lightbox-active */
+        body.lightbox-active .custom-cursor {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 80vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 8px;
+            transition: filter 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -50px;
+            right: -10px;
+            color: white;
+            font-size: 40px;
+            font-weight: 300;
+            cursor: pointer;
+            z-index: 10001;
+            transition: color 0.3s ease, transform 0.3s ease;
+            line-height: 1;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox-close:hover {
+            color: var(--accent-primary);
+            transform: scale(1.1) rotate(90deg);
+            background: rgba(255, 237, 78, 0.2);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .lightbox-nav-left,
+        .lightbox-nav-right {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            cursor: pointer;
+            pointer-events: all;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .lightbox-nav-left {
+            left: 0;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='leftArrow' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23fff;stop-opacity:0.9' /%3E%3Cstop offset='50%25' style='stop-color:%23ffed4e;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23ffd700;stop-opacity:1' /%3E%3C/linearGradient%3E%3Cfilter id='arrowShadow' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur in='SourceAlpha' stdDeviation='3'/%3E%3CfeOffset dx='2' dy='2' result='offset'/%3E%3CfeFlood flood-color='%23000' flood-opacity='0.7'/%3E%3CfeComposite in2='offset' operator='in'/%3E%3CfeMerge%3E%3CfeMergeNode/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M25 8L15 20L25 32L22 35L8 20L22 5Z' fill='url(%23leftArrow)' stroke='%23b8860b' stroke-width='2' filter='url(%23arrowShadow)'/%3E%3Cpath d='M24 10L16 20L24 30L21 32L10 20L21 8Z' fill='%23fff' opacity='0.3'/%3E%3C/svg%3E") 20 20, w-resize;
+        }
+
+        .lightbox-nav-right {
+            right: 0;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='rightArrow' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23fff;stop-opacity:0.9' /%3E%3Cstop offset='50%25' style='stop-color:%23ffed4e;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23ffd700;stop-opacity:1' /%3E%3C/linearGradient%3E%3Cfilter id='arrowShadowRight' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur in='SourceAlpha' stdDeviation='3'/%3E%3CfeOffset dx='2' dy='2' result='offset'/%3E%3CfeFlood flood-color='%23000' flood-opacity='0.7'/%3E%3CfeComposite in2='offset' operator='in'/%3E%3CfeMerge%3E%3CfeMergeNode/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M15 8L25 20L15 32L18 35L32 20L18 5Z' fill='url(%23rightArrow)' stroke='%23b8860b' stroke-width='2' filter='url(%23arrowShadowRight)'/%3E%3Cpath d='M16 10L24 20L16 30L19 32L30 20L19 8Z' fill='%23fff' opacity='0.3'/%3E%3C/svg%3E") 20 20, e-resize;
+        }
+
+        /* Áreas invisíveis para navegação por cursor */
+        .lightbox-nav-left:hover,
+        .lightbox-nav-right:hover {
+            background: transparent;
+        }
+
+        .lightbox-caption {
+            display: none;
+        }
+
+        @keyframes gentlePulse {
+
+            0%,
+            100% {
+                opacity: 0.8;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .lightbox-counter {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 20, 20, 0.95));
+            color: #ffd700;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+            white-space: nowrap;
+            animation: gentlePulse 4s ease-in-out infinite;
+        }
+
+        .lightbox-counter #lightbox-current {
+            color: var(--accent-primary);
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        /* Responsive Lightbox */
+        @media (max-width: 768px) {
+            .lightbox-close {
+                top: -40px;
+                right: 0px;
+                font-size: 30px;
+                width: 40px;
+                height: 40px;
+            }
+
+            .lightbox-image {
+                max-height: 70vh;
+            }
+
+            .lightbox-caption {
+                font-size: 14px;
+                margin-top: 15px;
+                padding: 8px 16px;
+            }
+
+            .lightbox-counter {
+                bottom: -50px;
+                font-size: 16px;
+                padding: 6px 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .lightbox-content {
+                max-width: 95%;
+                max-height: 95%;
+            }
+
+            .lightbox-image {
+                max-height: 60vh;
+            }
+
+            .lightbox-close {
+                top: -35px;
+                right: 5px;
+                font-size: 25px;
+                width: 35px;
+                height: 35px;
+            }
+
+            .lightbox-caption {
+                font-size: 12px;
+                margin-top: 10px;
+                padding: 6px 12px;
+            }
+
+            .lightbox-counter {
+                bottom: -40px;
+                font-size: 14px;
+                padding: 5px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Cursor personalizado -->
+    <div class="custom-cursor"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo-favicon">
+                <img src="bdn_fabicon.png" alt="BDN">
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Gallery Header -->
+        <section class="gallery-header">
+            <h1 class="gallery-title">Galeria de Projetos</h1>
+            <p class="gallery-subtitle">
+                Explore os nossos projetos de arquitetura e construção.
+                Cada obra representa a nossa dedicação à excelência e inovação.
+            </p>
+        </section>
+
+        <!-- Categories Filter -->
+        <section class="categories-filter">
+            <button class="category-btn active" data-category="all">Todos</button>
+            <button class="category-btn" data-category="projetamos">Projetamos</button>
+            <button class="category-btn" data-category="arquitetamos">Arquitetamos</button>
+            <button class="category-btn" data-category="construimos">Construímos</button>
+        </section>
+
+        <!-- Gallery Grid -->
+        <section class="gallery-grid" id="gallery-grid">
+            <!-- Projetos serão carregados dinamicamente aqui -->
+        </section>
+    </main>
+
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle-fixed" id="theme-toggle" title="Alternar Tema">
+        <div class="theme-circle"></div>
+    </div>
+
+    <script>
+        // Cursor personalizado
+        class CustomCursor {
+            constructor() {
+                this.cursor = document.querySelector('.custom-cursor');
+                this.initCursor();
+            }
+
+            initCursor() {
+                document.addEventListener('mousemove', (e) => {
+                    this.cursor.style.left = e.clientX + 'px';
+                    this.cursor.style.top = e.clientY + 'px';
+                });
+
+                // Efeito hover para elementos interativos
+                const interactiveElements = document.querySelectorAll('a, button, .project-card');
+
+                interactiveElements.forEach(element => {
+                    element.addEventListener('mouseenter', () => {
+                        this.cursor.classList.add('hover');
+                    });
+
+                    element.addEventListener('mouseleave', () => {
+                        this.cursor.classList.remove('hover');
+                    });
+                });
+
+                // Controle especial para o favicon - esconder cursor completamente
+                const favicon = document.querySelector('.logo-favicon');
+                if (favicon) {
+                    favicon.addEventListener('mouseenter', () => {
+                        this.cursor.classList.add('hidden');
+                        document.body.style.cursor = 'none';
+                        favicon.style.cursor = 'none';
+                    });
+
+                    favicon.addEventListener('mouseleave', () => {
+                        this.cursor.classList.remove('hidden');
+                        document.body.style.cursor = 'auto';
+                        favicon.style.cursor = 'none';
+                    });
+                }
+            }
+        }
+
+        // Sistema de temas
+        class ThemeManager {
+            constructor() {
+                this.currentTheme = localStorage.getItem('bdn-theme') || 'default';
+                this.applyTheme();
+                this.initToggle();
+                this.initStorageSync();
+            }
+
+            applyTheme() {
+                if (this.currentTheme === 'inverted') {
+                    document.body.setAttribute('data-theme', 'inverted');
+                } else {
+                    document.body.removeAttribute('data-theme');
+                }
+            }
+
+            toggleTheme() {
+                this.currentTheme = this.currentTheme === 'default' ? 'inverted' : 'default';
+                localStorage.setItem('bdn-theme', this.currentTheme);
+                this.applyTheme();
+            }
+
+            initToggle() {
+                const toggle = document.getElementById('theme-toggle');
+                toggle.addEventListener('click', () => this.toggleTheme());
+            }
+
+            initStorageSync() {
+                // Sincronizar tema entre abas/páginas
+                window.addEventListener('storage', (e) => {
+                    if (e.key === 'bdn-theme') {
+                        this.currentTheme = e.newValue || 'default';
+                        this.applyTheme();
+                        console.log(`Tema sincronizado: ${this.currentTheme === 'inverted' ? 'Inverso' : 'Padrão'}`);
+                    }
+                });
+            }
+        }
+
+        // Galeria de projetos
+        class Gallery {
+            constructor() {
+                this.currentFilter = 'all';
+                this.currentIndex = 0;
+                this.currentImages = [];
+
+                this.projects = [
+                    {
+                        id: 1,
+                        title: "Casa Moderna Esposende",
+                        category: "projetamos",
+                        description: "Projeto residencial moderno com linhas clean e sustentabilidade.",
+                        image: "imagens/projetamos/habitacao1.png"
+                    },
+                    {
+                        id: 2,
+                        title: "Villa Contemporânea",
+                        category: "arquitetamos",
+                        description: "Arquitetura contemporânea com integração paisagística.",
+                        image: "imagens/arquitetamos/habitacao2.png"
+                    },
+                    {
+                        id: 3,
+                        title: "Edifício Residencial",
+                        category: "construimos",
+                        description: "Construção de edifício residencial de alta qualidade.",
+                        image: "imagens/construimos/img6.png"
+                    },
+                    {
+                        id: 4,
+                        title: "Casa Familiar",
+                        category: "projetamos",
+                        description: "Projeto de moradia familiar com espaços funcionais.",
+                        image: "imagens/projetamos/habitacao2.png"
+                    },
+                    {
+                        id: 5,
+                        title: "Residência de Luxo",
+                        category: "arquitetamos",
+                        description: "Arquitetura de luxo com detalhes únicos.",
+                        image: "imagens/arquitetamos/habitacao3.png"
+                    },
+                    {
+                        id: 6,
+                        title: "Complexo Habitacional",
+                        category: "construimos",
+                        description: "Construção de complexo habitacional moderno.",
+                        image: "imagens/construimos/img7.png"
+                    },
+                    {
+                        id: 7,
+                        title: "Moradia Térrea",
+                        category: "projetamos",
+                        description: "Projeto de moradia térrea com jardim integrado.",
+                        image: "imagens/projetamos/habitacao3.png"
+                    },
+                    {
+                        id: 8,
+                        title: "Casa Minimalista",
+                        category: "arquitetamos",
+                        description: "Design minimalista com foco na funcionalidade.",
+                        image: "imagens/arquitetamos/habitacao4.png"
+                    },
+                    {
+                        id: 9,
+                        title: "Projeto Sustentável",
+                        category: "construimos",
+                        description: "Construção sustentável com materiais ecológicos.",
+                        image: "imagens/construimos/img8.png"
+                    }
+                ];
+
+                this.currentFilter = 'all';
+                this.initFilters();
+                this.renderProjects();
+                this.initLightbox();
+
+                console.log('Gallery inicializada com filtro:', this.currentFilter);
+                console.log('Total de projetos:', this.projects.length);
+            }
+
+            renderProjects() {
+                console.log('Renderizando projetos com filtro:', this.currentFilter);
+                const grid = document.getElementById('gallery-grid');
+                const filteredProjects = this.currentFilter === 'all'
+                    ? this.projects
+                    : this.projects.filter(project => project.category === this.currentFilter);
+
+                console.log('Projetos filtrados:', filteredProjects.length);
+
+                grid.innerHTML = filteredProjects.map((project, index) => `
+                    <div class="project-card" data-category="${project.category}" data-index="${index}">
+                        <div class="project-image">
+                            <img src="${project.image}" alt="${project.title}" onerror="this.style.display='none'; this.parentNode.innerHTML='<span>Imagem não disponível</span>'">
+                        </div>
+                    </div>
+                `).join('');
+
+                // Atualizar array de imagens filtradas para o lightbox
+                this.currentImages = filteredProjects;
+
+                // Adicionar event listeners às imagens
+                this.addImageClickEvents();
+
+                // Atualizar cursor para novos elementos
+                this.updateCursorEvents();
+            }
+
+            getCategoryName(category) {
+                const names = {
+                    'projetamos': 'Projetamos',
+                    'arquitetamos': 'Arquitetamos',
+                    'construimos': 'Construímos'
+                };
+                return names[category] || category;
+            }
+
+            initFilters() {
+                const filterButtons = document.querySelectorAll('.category-btn');
+                console.log('Filtros encontrados:', filterButtons.length);
+
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        console.log('Clique no filtro:', button.dataset.category);
+
+                        // Remove active class from all buttons
+                        filterButtons.forEach(btn => btn.classList.remove('active'));
+
+                        // Add active class to clicked button
+                        button.classList.add('active');
+
+                        // Update filter and render
+                        this.currentFilter = button.dataset.category;
+                        console.log('Filtro atual:', this.currentFilter);
+                        this.renderProjects();
+                    });
+                });
+            }
+
+            updateCursorEvents() {
+                const cursor = document.querySelector('.custom-cursor');
+                const interactiveElements = document.querySelectorAll('a, button, .project-card');
+
+                interactiveElements.forEach(element => {
+                    element.addEventListener('mouseenter', () => {
+                        cursor.classList.add('hover');
+                    });
+
+                    element.addEventListener('mouseleave', () => {
+                        cursor.classList.remove('hover');
+                    });
+                });
+            }
+
+            addImageClickEvents() {
+                const projectCards = document.querySelectorAll('.project-card');
+                projectCards.forEach((card, index) => {
+                    card.addEventListener('click', () => {
+                        this.openLightbox(index);
+                    });
+                });
+            }
+
+            initLightbox() {
+                this.lightbox = document.getElementById('lightbox');
+                this.lightboxImage = document.getElementById('lightbox-image');
+                this.lightboxCaption = document.querySelector('.lightbox-caption');
+                this.lightboxClose = document.querySelector('.lightbox-close');
+                this.lightboxNavLeft = document.getElementById('lightbox-nav-left');
+                this.lightboxNavRight = document.getElementById('lightbox-nav-right');
+                this.lightboxCurrent = document.getElementById('lightbox-current');
+                this.lightboxTotal = document.getElementById('lightbox-total');
+
+                // Event listeners para controles do lightbox
+                this.lightboxClose.addEventListener('click', () => this.closeLightbox());
+                this.lightboxNavLeft.addEventListener('click', () => this.prevImage());
+                this.lightboxNavRight.addEventListener('click', () => this.nextImage());
+
+                // Cursor na imagem do lightbox
+                this.lightboxImage.addEventListener('mousemove', (e) => {
+                    const rect = this.lightboxImage.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const imageWidth = rect.width;
+
+                    if (x < imageWidth / 2) {
+                        this.lightboxImage.style.cursor = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='leftArrow' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23fff;stop-opacity:0.9' /%3E%3Cstop offset='50%25' style='stop-color:%23ffed4e;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23ffd700;stop-opacity:1' /%3E%3C/linearGradient%3E%3Cfilter id='arrowShadow' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur in='SourceAlpha' stdDeviation='3'/%3E%3CfeOffset dx='2' dy='2' result='offset'/%3E%3CfeFlood flood-color='%23000' flood-opacity='0.7'/%3E%3CfeComposite in2='offset' operator='in'/%3E%3CfeMerge%3E%3CfeMergeNode/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M25 8L15 20L25 32L22 35L8 20L22 5Z' fill='url(%23leftArrow)' stroke='%23b8860b' stroke-width='2' filter='url(%23arrowShadow)'/%3E%3Cpath d='M24 10L16 20L24 30L21 32L10 20L21 8Z' fill='%23fff' opacity='0.3'/%3E%3C/svg%3E\") 20 20, w-resize";
+                    } else {
+                        this.lightboxImage.style.cursor = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='rightArrow' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23fff;stop-opacity:0.9' /%3E%3Cstop offset='50%25' style='stop-color:%23ffed4e;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23ffd700;stop-opacity:1' /%3E%3C/linearGradient%3E%3Cfilter id='arrowShadowRight' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur in='SourceAlpha' stdDeviation='3'/%3E%3CfeOffset dx='2' dy='2' result='offset'/%3E%3CfeFlood flood-color='%23000' flood-opacity='0.7'/%3E%3CfeComposite in2='offset' operator='in'/%3E%3CfeMerge%3E%3CfeMergeNode/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M15 8L25 20L15 32L18 35L32 20L18 5Z' fill='url(%23rightArrow)' stroke='%23b8860b' stroke-width='2' filter='url(%23arrowShadowRight)'/%3E%3Cpath d='M16 10L24 20L16 30L19 32L30 20L19 8Z' fill='%23fff' opacity='0.3'/%3E%3C/svg%3E\") 20 20, e-resize";
+                    }
+                });
+
+                // Clique na imagem para navegar
+                this.lightboxImage.addEventListener('click', (e) => {
+                    const rect = this.lightboxImage.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const imageWidth = rect.width;
+
+                    if (x < imageWidth / 2) {
+                        this.prevImage();
+                    } else {
+                        this.nextImage();
+                    }
+                });
+
+                // Reset do cursor quando sair da imagem
+                this.lightboxImage.addEventListener('mouseleave', () => {
+                    this.lightboxImage.style.cursor = 'default';
+                });
+
+                // Fechar lightbox ao clicar fora da imagem
+                this.lightbox.addEventListener('click', (e) => {
+                    if (e.target === this.lightbox) {
+                        this.closeLightbox();
+                    }
+                });
+
+                // Controles por teclado
+                document.addEventListener('keydown', (e) => {
+                    if (this.lightbox.classList.contains('show')) {
+                        switch (e.key) {
+                            case 'Escape':
+                                this.closeLightbox();
+                                break;
+                            case 'ArrowRight':
+                                this.nextImage();
+                                break;
+                            case 'ArrowLeft':
+                                this.prevImage();
+                                break;
+                        }
+                    }
+                });
+            }
+
+            openLightbox(index) {
+                this.currentIndex = index;
+                this.lightboxTotal.textContent = this.currentImages.length;
+                this.showImage(index);
+                this.lightbox.classList.add('show');
+                document.body.style.overflow = 'hidden';
+
+                // Adicionar classe para esconder cursor personalizado
+                document.body.classList.add('lightbox-active');
+
+                // Esconder cursor personalizado
+                const customCursor = document.querySelector('.custom-cursor');
+                if (customCursor) {
+                    customCursor.style.opacity = '0';
+                    customCursor.style.visibility = 'hidden';
+                    customCursor.style.pointerEvents = 'none';
+                }
+            }
+
+            closeLightbox() {
+                this.lightbox.classList.remove('show');
+                document.body.style.overflow = 'auto';
+
+                // Remover classe para mostrar cursor personalizado
+                document.body.classList.remove('lightbox-active');
+
+                // Mostrar cursor personalizado novamente
+                const customCursor = document.querySelector('.custom-cursor');
+                if (customCursor) {
+                    customCursor.style.opacity = '1';
+                    customCursor.style.visibility = 'visible';
+                    customCursor.style.pointerEvents = 'auto';
+                }
+            }
+
+            showImage(index) {
+                const project = this.currentImages[index];
+
+                // Efeito de carregamento
+                this.lightboxImage.style.filter = 'blur(1px)';
+                this.lightboxImage.style.opacity = '0.7';
+                this.lightboxImage.style.transform = 'scale(0.98)';
+
+                // Precarregar imagem
+                const newImage = new Image();
+                newImage.onload = () => {
+                    this.lightboxImage.src = project.image;
+                    this.lightboxImage.alt = project.title;
+                    // Caption removida - sem descrição das imagens
+
+                    // Atualizar numeração
+                    this.updatePageNumber(index + 1);
+
+                    // Remover efeito de carregamento
+                    setTimeout(() => {
+                        this.lightboxImage.style.filter = 'blur(0px)';
+                        this.lightboxImage.style.opacity = '1';
+                        this.lightboxImage.style.transform = 'scale(1)';
+                    }, 50);
+                };
+                newImage.src = project.image;
+            }
+
+            updatePageNumber(newNumber) {
+                this.lightboxCurrent.style.transform = 'scale(1.2)';
+                this.lightboxCurrent.style.opacity = '0.6';
+
+                setTimeout(() => {
+                    this.lightboxCurrent.textContent = newNumber;
+                    this.lightboxCurrent.style.transform = 'scale(1)';
+                    this.lightboxCurrent.style.opacity = '1';
+                }, 100);
+            }
+
+            nextImage() {
+                this.currentIndex = (this.currentIndex + 1) % this.currentImages.length;
+                this.showImage(this.currentIndex);
+            }
+
+            prevImage() {
+                this.currentIndex = (this.currentIndex - 1 + this.currentImages.length) % this.currentImages.length;
+                this.showImage(this.currentIndex);
+            }
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            new CustomCursor();
+            new ThemeManager();
+            new Gallery();
+        });
+    </script>
+
+    <!-- Lightbox para galeria BDN Arquitetura -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <span class="lightbox-close">&times;</span>
+            <img id="lightbox-image" class="lightbox-image" src="" alt="">
+            <div class="lightbox-caption"></div>
+            <div class="lightbox-nav">
+                <div class="lightbox-nav-left" id="lightbox-nav-left"></div>
+                <div class="lightbox-nav-right" id="lightbox-nav-right"></div>
+            </div>
+            <div class="lightbox-counter">
+                <span id="lightbox-current">1</span> / <span id="lightbox-total">15</span>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
