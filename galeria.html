@@ -342,30 +342,51 @@
             color: var(--bg-primary);
         }
 
-        /* Gallery Grid */
+        /* Gallery Grid (Asymmetric Editorial Style) */
         .gallery-grid {
-            column-count: 3;
-            column-gap: 2rem;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: clamp(2rem, 4vw, 3rem);
             max-width: 1400px;
             margin: 0 auto;
+            align-items: start;
         }
 
         .project-card {
-            break-inside: avoid;
-            margin-bottom: 2rem;
             background: transparent;
-            border-radius: 12px;
+            border-radius: 0;
             overflow: hidden;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 215, 0, 0.1);
-            display: inline-block;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 3px solid #F5C400;
             width: 100%;
+        }
+
+        /* Dynamically varying span sizes for variety matching masonry editorial */
+        .project-card:nth-child(5n + 1) {
+            grid-column: span 12;
+        }
+
+        .project-card:nth-child(5n + 2) {
+            grid-column: span 7;
+            margin-top: 4rem;
+        }
+
+        .project-card:nth-child(5n + 3) {
+            grid-column: span 5;
+        }
+
+        .project-card:nth-child(5n + 4) {
+            grid-column: span 6;
+            margin-top: 2rem;
+        }
+
+        .project-card:nth-child(5n + 5) {
+            grid-column: span 6;
         }
 
         .project-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 35px var(--shadow-color);
-            border-color: var(--accent-primary);
         }
 
         .project-image {
@@ -385,17 +406,24 @@
             height: auto;
             display: block;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+            filter: grayscale(100%);
         }
 
         .project-card:hover .project-image img {
             transform: scale(1.05);
+            filter: grayscale(0%);
         }
 
         /* Responsividade */
         @media (max-width: 1024px) {
             .gallery-grid {
-                column-count: 2;
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .project-card:nth-child(n) {
+                grid-column: span 1;
+                margin-top: 0;
             }
         }
 
@@ -424,8 +452,13 @@
             }
 
             .gallery-grid {
-                column-count: 1;
-                column-gap: 0;
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .project-card:nth-child(n) {
+                grid-column: span 1;
+                margin-top: 0;
             }
 
             .categories-filter {

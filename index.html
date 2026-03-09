@@ -9800,7 +9800,8 @@
                 .aamp-gallery-item {
                     position: relative;
                     width: 100%;
-                    border-radius: 4px;
+                    border-radius: 0;
+                    border: 3px solid #F5C400;
                     overflow: hidden;
                 }
 
@@ -9808,13 +9809,13 @@
                     width: 100%;
                     height: 80vh;
                     object-fit: cover;
-                    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
-                    filter: brightness(0.9);
+                    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+                    filter: grayscale(100%);
                 }
 
                 .aamp-gallery-item:hover .aamp-gallery-img {
                     transform: scale(1.05);
-                    filter: brightness(1.05);
+                    filter: grayscale(0%);
                 }
 
                 .aamp-gallery-caption {
@@ -9859,9 +9860,9 @@
                     position: relative;
                     width: 100%;
                     overflow: hidden;
-                    border-radius: 8px;
+                    border-radius: 0;
+                    border: 3px solid #F5C400;
                     background-color: #000;
-                    box-shadow: 0 0 35px 2px rgba(255, 215, 0, 0.4);
                     transition: box-shadow 0.4s ease;
                 }
 
@@ -9874,14 +9875,14 @@
                     height: auto;
                     object-fit: cover;
                     display: block;
-                    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease, opacity 0.5s ease;
-                    filter: brightness(0.95);
+                    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease, opacity 0.5s ease;
+                    filter: grayscale(100%);
                     opacity: 1;
                 }
 
                 .aamp-gallery-item:hover .aamp-gallery-img {
                     transform: scale(1.05);
-                    filter: brightness(1.05);
+                    filter: grayscale(0%);
                     opacity: 1;
                 }
 
@@ -9940,16 +9941,28 @@
                         <img src="imagens/arquitetamos/habitacao4.png" alt="Construção BDN" class="aamp-gallery-img">
                     </div>
                 </div>
-                <!-- Coluna Direita (com espaçamento em cima estilo staggered) -->
-                <div class="aamp-gallery-column" style="margin-top: clamp(6rem, 20vw, 15rem);">
-                    <div class="aamp-gallery-item" style="width: 100%;">
-                        <img src="imagens/arquitetamos/habitacao7.png" alt="Arquitetura BDN" class="aamp-gallery-img">
+                <!-- Coluna Direita -->
+                <div class="aamp-gallery-column" style="margin-top: 0;">
+                    <!-- Breathing scroll wrapper 1 -->
+                    <div class="breathing-space-wrapper">
+                        <div class="breathing-space breathing-space-sticky">
+                            <h2 class="breathing-title">Forma e <br><span class="accent-text">Função</span></h2>
+                            <p class="breathing-subtitle">
+                                Desenhamos espaços onde a estética encontra o propósito.
+                                Uma harmonia perfeita entre o design inovador e a sua vivência.
+                            </p>
+                        </div>
                     </div>
+
                     <div class="aamp-gallery-item" style="width: 85%; margin-left: 15%;">
                         <img src="imagens/arquitetamos/habitacao8.png" alt="Arquitetura BDN" class="aamp-gallery-img">
                     </div>
                     <div class="aamp-gallery-item" style="width: 90%; margin-right: 10%;">
                         <img src="imagens/arquitetamos/habitacao9.png" alt="Projeto BDN" class="aamp-gallery-img">
+                    </div>
+
+                    <div class="aamp-gallery-item" style="width: 100%;">
+                        <img src="imagens/arquitetamos/habitacao7.png" alt="Arquitetura BDN" class="aamp-gallery-img">
                     </div>
                 </div>
             </div>
@@ -10181,25 +10194,146 @@
 
 
 
+        <!-- Breathing Space com Texto (Negative Space) -->
+        <style>
+            .breathing-space-wrapper {
+                position: relative;
+                width: 100%;
+                height: 120vh;
+                /* Determines how long the user must scroll to finish the effect */
+                z-index: 10;
+            }
+
+            .breathing-space-sticky {
+                position: sticky;
+                top: 40vh;
+                /* Screen position where it sticks */
+                background-color: transparent;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                text-align: left;
+                margin: 0;
+                width: 80%;
+                margin-left: 20%;
+                --scroll-fill: 100%;
+                /* controlled by JS, 100=empty, 0=full */
+            }
+
+            .breathing-title {
+                font-family: 'Clash Display', sans-serif;
+                font-size: clamp(2.5rem, 4vw, 3.5rem);
+                font-weight: 600;
+                letter-spacing: 1px;
+                margin-bottom: 1.5rem;
+                line-height: 1.1;
+                max-width: 800px;
+                background: linear-gradient(to right, var(--text-primary) 50%, rgba(150, 150, 150, 0.2) 50%);
+                background-size: 200% 100%;
+                background-position: var(--scroll-fill) 0;
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                will-change: background-position;
+            }
+
+            .breathing-title .accent-text {
+                background: linear-gradient(to right, var(--accent-primary) 50%, rgba(150, 150, 150, 0.2) 50%);
+                background-size: 200% 100%;
+                background-position: var(--scroll-fill) 0;
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                will-change: background-position;
+            }
+
+            .breathing-subtitle {
+                font-family: 'Montserrat', sans-serif;
+                font-size: clamp(1rem, 1.5vw, 1.2rem);
+                max-width: 650px;
+                line-height: 1.8;
+                font-weight: 300;
+                background: linear-gradient(to right, var(--text-secondary) 50%, rgba(150, 150, 150, 0.2) 50%);
+                background-size: 200% 100%;
+                background-position: var(--scroll-fill) 0;
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                will-change: background-position;
+            }
+
+            @media (max-width: 768px) {
+                .breathing-space-sticky {
+                    margin-left: 0;
+                    width: 100%;
+                    top: 30vh;
+                }
+
+                .breathing-space-wrapper {
+                    height: 100vh;
+                }
+            }
+        </style>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const wrappers = document.querySelectorAll('.breathing-space-wrapper');
+                if (wrappers.length === 0) return;
+
+                window.addEventListener('scroll', () => {
+                    wrappers.forEach((wrapper) => {
+                        const stickyEl = wrapper.querySelector('.breathing-space-sticky');
+                        if (!stickyEl) return;
+
+                        const rect = wrapper.getBoundingClientRect();
+                        const scrollDistance = wrapper.offsetHeight - stickyEl.offsetHeight;
+                        if (scrollDistance <= 0) return;
+
+                        const stickyTopCSS = parseFloat(getComputedStyle(stickyEl).top) || 0;
+
+                        // Calculate progress based on distance moved past the stick trigger point
+                        let progress = (stickyTopCSS - rect.top) / scrollDistance;
+                        progress = Math.max(0, Math.min(1, progress));
+
+                        // Map progress to background-position (100% to 0%)
+                        const percentage = 100 - (progress * 100);
+                        stickyEl.style.setProperty('--scroll-fill', `${percentage}%`);
+                    });
+                }, { passive: true });
+            });
+        </script>
+
         <!-- Galeria AAMP Style (Segunda Metade) -->
-        <section class="aamp-gallery-section" style="padding-top: 40px;">
+        <section class="aamp-gallery-section" style="padding-top: clamp(8rem, 15vh, 12rem);">
             <div class="aamp-gallery-container">
                 <!-- Coluna Esquerda -->
                 <div class="aamp-gallery-column">
                     <div class="aamp-gallery-item" style="width: 80%; margin-right: 20%;">
                         <img src="imagens/arquitetamos/habitacao5.png" alt="Construção BDN" class="aamp-gallery-img">
                     </div>
-                    <div class="aamp-gallery-item" style="width: 95%; margin-left: 5%;">
+                    <div class="aamp-gallery-item" style="width: 95%; margin-left: 5%; margin-top: 60vh;">
                         <img src="imagens/arquitetamos/habitacao6.png" alt="Projeto BDN" class="aamp-gallery-img">
-                    </div>
-                </div>
-                <!-- Coluna Direita -->
-                <div class="aamp-gallery-column" style="margin-top: clamp(3rem, 10vw, 8rem);">
-                    <div class="aamp-gallery-item" style="width: 80%; margin-left: 20%;">
-                        <img src="imagens/arquitetamos/habitacao10.png" alt="Arquitetura BDN" class="aamp-gallery-img">
                     </div>
                     <div class="aamp-gallery-item" style="width: 95%;">
                         <img src="imagens/arquitetamos/habitacao11.png" alt="Construção BDN" class="aamp-gallery-img">
+                    </div>
+                </div>
+                <!-- Coluna Direita -->
+                <div class="aamp-gallery-column" style="margin-top: 0;">
+                    <div class="aamp-gallery-item" style="width: 85%; margin-right: 15%;">
+                        <img src="imagens/arquitetamos/habitacao10.png" alt="Arquitetura BDN" class="aamp-gallery-img">
+                    </div>
+
+                    <!-- Breathing scroll wrapper 2 -->
+                    <div class="breathing-space-wrapper">
+                        <div class="breathing-space breathing-space-sticky">
+                            <h2 class="breathing-title">O Vazio <br><span class="accent-text">Estruturado</span></h2>
+                            <p class="breathing-subtitle">
+                                A nossa arquitetura encontra no silêncio do espaço a força das suas linhas.
+                                Cada projeto é um respiro intencional na paisagem que ocupamos.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
