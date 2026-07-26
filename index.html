@@ -10095,6 +10095,11 @@
             </div>
             <script>
                 document.addEventListener("DOMContentLoaded", () => {
+                    if (window.innerWidth <= 768) {
+                        const fillContainer = document.getElementById("fill-text-active");
+                        if (fillContainer) fillContainer.style.width = '100%';
+                        return;
+                    }
                     window.addEventListener(
                         "scroll",
                         () => {
@@ -10175,6 +10180,8 @@
 
             <script>
                 document.addEventListener("DOMContentLoaded", () => {
+                    if (window.innerWidth <= 768) return;
+                    
                     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
                         gsap.registerPlugin(ScrollTrigger);
 
@@ -10984,6 +10991,8 @@
 
             <script>
                 document.addEventListener('DOMContentLoaded', () => {
+                    if (window.innerWidth <= 768) return;
+                    
                     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
                         gsap.registerPlugin(ScrollTrigger);
 
@@ -15013,6 +15022,114 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.4);
             transform: translateX(-50%) translateY(-8px) scale(1.05);
             animation: none;
+        }
+
+        /* =========================================
+           MOBILE OPTIMIZATION PASS (MAX-WIDTH: 768px)
+           ========================================= */
+        @media (max-width: 768px) {
+            /* 1. Reset Grids */
+            .sobre-bdn-layout,
+            .partnership-info,
+            .process-steps-container {
+                grid-template-columns: 1fr !important;
+                gap: 2rem !important;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* 2. Typography */
+            h2, .section-title {
+                font-size: 2.2rem !important;
+            }
+            .hero-logo-text {
+                font-size: 65vmin !important;
+            }
+            .hero-word {
+                font-size: 15vw !important;
+                letter-spacing: 2px !important;
+            }
+
+            /* 3. Workflow (Zigue-Zague) Fixes */
+            .process-steps-container {
+                height: auto !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                padding: 2rem 1rem !important;
+            }
+            
+            .process-item {
+                position: relative !important;
+                left: auto !important;
+                right: auto !important;
+                top: auto !important;
+                bottom: auto !important;
+                width: 100% !important;
+                max-width: 320px !important;
+                margin: 0 auto 3rem auto !important;
+                transform: none !important;
+            }
+            
+            .process-item.up .process-text-container,
+            .process-item.down .process-text-container {
+                position: relative !important;
+                top: auto !important;
+                bottom: auto !important;
+                left: auto !important;
+                right: auto !important;
+                transform: none !important;
+                width: 100% !important;
+                padding: 1rem 0 0 0 !important;
+                text-align: center !important;
+            }
+
+            .process-number {
+                text-align: center !important;
+                width: 100% !important;
+                display: block !important;
+                font-size: 4rem !important;
+                position: relative !important;
+                left: 0 !important;
+                transform: none !important;
+            }
+
+            /* 4. Fullscreen & Sticky Sections */
+            .sticky-text-section,
+            .fullscreen-section {
+                height: auto !important;
+                min-height: 50vh !important;
+                padding: 3rem 1rem !important;
+                margin-top: 1rem !important;
+            }
+            
+            .sticky-text-container {
+                position: relative !important;
+                height: auto !important;
+                padding: 2rem 0 !important;
+            }
+
+            /* 5. Contact FAB Button safe area */
+            .fab-contact-btn {
+                bottom: 20px !important; 
+                font-size: 0.85rem !important;
+                padding: 12px 24px !important;
+                width: max-content !important;
+            }
+
+            /* 6. GSAP Overrides */
+            .gs-slide-up, .gs-scale-up, .process-title, .process-step, .process-circle {
+                opacity: 1 !important;
+                transform: none !important;
+                visibility: visible !important;
+            }
+
+            /* General Spacing */
+            .section {
+                padding: 3rem 0 !important;
+            }
         }
     </style>
 
