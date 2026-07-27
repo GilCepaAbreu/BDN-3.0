@@ -27,6 +27,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive:wght@400..700&family=Michroma&family=Oswald:wght@200..700&family=Bebas+Neue&display=swap"
         rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Syncopate:wght@400;700&display=swap" rel="stylesheet" />
     <style>
         * {
             margin: 0;
@@ -238,6 +239,14 @@
         textarea,
         select {
             cursor: none;
+        }
+
+
+        @font-face {
+            font-family: 'Adventure Subtitles';
+            src: url('fonts/adventure_subtitles.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
         }
 
         body {
@@ -452,7 +461,6 @@
         }
 
         /* Fundo preto para logo quando sobre seções amarelas */
-
         .logo-img.on-yellow-section {
             background: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(15px);
@@ -461,6 +469,13 @@
             border: none;
             box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .desktop-logo .logo-img.on-yellow-section {
+            background: none !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            padding: 0 !important;
         }
 
         /* No tema amarelo, remover todos os efeitos quando o logo tem fundo preto */
@@ -499,8 +514,10 @@
         }
 
         .desktop-logo .logo-img {
-            width: clamp(270px, 54vw, 360px);
-            height: clamp(200px, 40vw, 270px);
+            width: clamp(250px, 40vw, 350px);
+            height: clamp(150px, 30vw, 250px);
+            margin-top: -65px;
+            margin-left: -20px;
             object-fit: contain;
             cursor: url("bdn_fabicon.png") 16 16, pointer;
             transition: all 0.3s ease;
@@ -2301,14 +2318,14 @@
 
         .hero-logo {
             text-align: center;
-            margin-top: 5vh;
+            margin-top: 8vh;
             margin-bottom: 0;
             opacity: 1;
         }
 
         .hero-logo-text {
-            font-family: "Montserrat", sans-serif;
-            font-weight: 900;
+            font-family: "Syncopate", "Michroma", "Montserrat", sans-serif;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: -0.03em;
             margin: 0 auto;
@@ -2318,12 +2335,14 @@
             justify-content: center;
             align-items: center;
             white-space: nowrap;
-            transform: translateX(-1.5vw);
+            transform: translateX(2vw);
             font-size: 75vmin;
             line-height: 0.9;
         }
 
         .hero-letter {
+            font-family: 'Adventure Subtitles', sans-serif !important;
+            font-weight: normal !important;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -2333,10 +2352,11 @@
             color: transparent;
             -webkit-text-fill-color: transparent;
             display: inline-block;
+            transition: all 0.4s ease;
         }
 
         .hero-logo-text:hover {
-            transform: translateX(-1.5vw) scale(1.05);
+            transform: translateX(2vw) scale(1.05);
             filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.5));
         }
 
@@ -13938,7 +13958,7 @@
                 contact_lets_talk: "VAMOS<br>CONVERSAR?",
                 footer_rights: "&copy; 2026 Grupo BDN. Todos os direitos reservados.",
                 footer_dev: "Desenvolvido por",
-                contact_lets_talk_btn: "VAMOS CONVERSAR",
+                contact_lets_talk_btn: "INICIE O SEU PROJETO",
             },
             en: {
                 nav_home: "Home",
@@ -14052,7 +14072,7 @@
                 contact_lets_talk: "LET'S<br>TALK?",
                 footer_rights: "&copy; 2026 BDN Group. All rights reserved.",
                 footer_dev: "Developed by",
-                contact_lets_talk_btn: "LET'S TALK",
+                contact_lets_talk_btn: "START YOUR PROJECT",
             },
         };
 
@@ -14576,19 +14596,21 @@
                 return true;
             }
 
+            let isAtTop = false;
+
             function updatePosition() {
                 if (!targetRect || window.innerWidth <= 768 || heroLogo.style.position !== "fixed") return;
-
+                
                 const placeholder = document.querySelector(".hero-logo-placeholder");
                 if (!placeholder) return;
 
                 const scrollY = window.scrollY || window.pageYOffset;
                 const maxScroll = Math.max(650, window.innerHeight * 0.75);
                 let progress = Math.min(scrollY / maxScroll, 1);
+                
+                // Curva de movimento mais suave e previsível
                 const easeProgress = 1 - Math.pow(1 - progress, 3);
 
-                // Dynamically read the placeholder's viewport-relative position.
-                // This is immune to browser scroll restoration races.
                 const pRect = placeholder.getBoundingClientRect();
 
                 const currentTop = pRect.top + (targetRect.top - pRect.top) * easeProgress;
@@ -14615,20 +14637,34 @@
                 heroLogo.style.textShadow = "none";
                 heroLogo.style.webkitTextStroke = "0px transparent";
 
-                const isInverted = document.documentElement.getAttribute("data-theme") === "inverted";
-                if (progress >= 1) {
-                    heroLogo.style.opacity = "1";
-                    heroLogo.style.pointerEvents = "auto";
-                    heroLogo.style.cursor = "url('bdn_fabicon.png') 16 16, pointer";
-                    heroLogo.style.padding = "0";
-                    headerLogo.style.visibility = "hidden";
-                    headerLogo.style.opacity = "0";
+                if (progress >= 0.99) {
+                    if (!isAtTop) {
+                        isAtTop = true;
+                        heroLogo.style.transition = "opacity 0.4s ease";
+                        heroLogo.style.opacity = "0";
+                        heroLogo.style.pointerEvents = "none";
+                        heroLogo.style.padding = "0";
+                        
+                        if (!headerLogo.src.includes("imagem.png")) headerLogo.src = "imagem.png";
+                        headerLogo.style.transition = "opacity 0.4s ease";
+                        headerLogo.style.visibility = "visible";
+                        headerLogo.style.opacity = "1";
+                        headerLogo.style.pointerEvents = "auto";
+                        headerLogo.style.cursor = "pointer";
+                    }
                 } else {
-                    heroLogo.style.opacity = "1";
-                    heroLogo.style.pointerEvents = "none";
-                    headerLogo.style.visibility = "hidden";
-                    heroLogo.style.padding = "0";
-                    heroLogo.style.filter = "none";
+                    if (isAtTop) {
+                        isAtTop = false;
+                        heroLogo.style.transition = "opacity 0.4s ease";
+                        heroLogo.style.opacity = "1";
+                        heroLogo.style.pointerEvents = "none";
+                        
+                        headerLogo.style.transition = "opacity 0.4s ease";
+                        headerLogo.style.visibility = "hidden";
+                        headerLogo.style.opacity = "0";
+                        heroLogo.style.padding = "0";
+                        heroLogo.style.filter = "none";
+                    }
                 }
             }
 
@@ -15134,7 +15170,7 @@
     </style>
 
     <button class="fab-contact-btn" id="fabContactBtn" data-translate="contact_lets_talk_btn" onclick="document.getElementById('contactModal').classList.add('active'); document.body.style.overflow='hidden';">
-        VAMOS CONVERSAR
+        INICIE O SEU PROJETO
     </button>
 
     <script>
