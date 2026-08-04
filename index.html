@@ -10115,11 +10115,6 @@
             </div>
             <script>
                 document.addEventListener("DOMContentLoaded", () => {
-                    if (window.innerWidth <= 768) {
-                        const fillContainer = document.getElementById("fill-text-active");
-                        if (fillContainer) fillContainer.style.width = '100%';
-                        return;
-                    }
                     window.addEventListener(
                         "scroll",
                         () => {
@@ -10148,7 +10143,7 @@
         </section>
 
         <!-- Galeria AAMP Style (Primeira Metade) -->
-        <section class="new-gallery-section" style="padding-bottom: 40px;">
+        <section id="projetamos" class="new-gallery-section" style="padding-bottom: 40px;">
             <div class="new-gallery-container">
                 <!-- Coluna Esquerda -->
                 <div class="new-gallery-column" style="margin-top: 0;">
@@ -10668,7 +10663,7 @@
         </script>
 
         <!-- Galeria AAMP Style (Segunda Metade) -->
-        <section class="new-gallery-section second-gallery" style="padding-top: clamp(2rem, 5vh, 5rem); padding-bottom: 40px;">
+        <section id="arquitetamos" class="new-gallery-section second-gallery" style="padding-top: clamp(2rem, 5vh, 5rem); padding-bottom: 40px;">
             <div class="new-gallery-container" style="grid-template-columns: 1.1fr 0.9fr 0.6fr 1fr; gap: 3vw; align-items: stretch; padding: 5vh 5vw;">
                 <!-- Coluna 1 -->
                 <div class="new-gallery-column" style="justify-content: space-between;">
@@ -10731,7 +10726,7 @@
         </section>
 
         <!-- Seção Workflow -->
-        <section class="workflow-section">
+        <section id="construimos" class="workflow-section">
             <style>
                 .workflow-section {
                     width: 100vw;
@@ -12908,36 +12903,6 @@
             });
 
             // Tracking adicional para a imagem - removido para evitar conflitos
-
-            // Event listener para a galeria do "Projetamos"
-            const projetamosGalleryTrigger = document.querySelector(
-                ".projetamos-gallery-trigger",
-            );
-            if (projetamosGalleryTrigger) {
-                projetamosGalleryTrigger.addEventListener("click", () => {
-                    showGallery(projetamosImages, 0);
-                });
-            }
-
-            // Event listener para a galeria do "Arquitetamos"
-            const arquitetamosGalleryTrigger = document.querySelector(
-                ".arquitetamos-gallery-trigger",
-            );
-            if (arquitetamosGalleryTrigger) {
-                arquitetamosGalleryTrigger.addEventListener("click", () => {
-                    showGallery(arquitetamosImages, 0);
-                });
-            }
-
-            // Event listener para a galeria do "Construímos"
-            const construimosGalleryTrigger = document.querySelector(
-                ".construimos-gallery-trigger",
-            );
-            if (construimosGalleryTrigger) {
-                construimosGalleryTrigger.addEventListener("click", () => {
-                    showGallery(construimosImages, 0);
-                });
-            }
         }
 
         // Scroll suave para elementos internos - incluindo dropdown desktop
@@ -14726,7 +14691,8 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const canvas = document.getElementById("hero-video-canvas");
-            if (canvas) {
+            const isMobile = window.innerWidth <= 768;
+            if (canvas && !isMobile) {
                 const context = canvas.getContext("2d");
                 const frameCount = 240;
 
@@ -15064,6 +15030,18 @@
            MOBILE OPTIMIZATION PASS (MAX-WIDTH: 768px)
            ========================================= */
         @media (max-width: 768px) {
+            /* Reset body background to black on mobile */
+            body, html, main, section, .sobre-bdn-section, .sobre-bdn-layout, .sobre-bdn-content, .new-gallery-section, .aamp-gallery-section, .gallery-section, .contact-section {
+                background-color: #000000 !important;
+                background: #000000 !important;
+            }
+
+            /* Remove top horizontal bar on header */
+            header {
+                border-bottom: none !important;
+                box-shadow: none !important;
+            }
+
             /* 1. Reset Grids */
             .sobre-bdn-layout,
             .partnership-info,
@@ -15080,60 +15058,111 @@
             h2, .section-title {
                 font-size: 2.2rem !important;
             }
-            .hero-logo-text {
-                font-size: 65vmin !important;
+            
+            /* Hero adjustments for mobile */
+            .hero-scroll-container {
+                height: 80vh !important;
+                min-height: 80vh !important;
             }
-            .hero-word {
-                font-size: 15vw !important;
-                letter-spacing: 2px !important;
+            .hero-sticky {
+                position: relative !important;
+                height: 80vh !important;
+                width: 100% !important;
+                background: #000000 !important;
             }
-
-            /* 3. Workflow (Zigue-Zague) Fixes */
-            .process-steps-container {
-                height: auto !important;
+            #hero-video-canvas {
+                display: none !important;
+            }
+            .hero {
+                height: 80vh !important;
+                min-height: 80vh !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 2rem 1.5rem !important;
                 display: flex !important;
                 flex-direction: column !important;
                 align-items: center !important;
-                padding: 2rem 1rem !important;
+                justify-content: center !important;
+                background: #000000 !important;
             }
-            
-            .process-item {
+            .hero-content-original {
                 position: relative !important;
-                left: auto !important;
-                right: auto !important;
-                top: auto !important;
-                bottom: auto !important;
                 width: 100% !important;
-                max-width: 320px !important;
-                margin: 0 auto 3rem auto !important;
-                transform: none !important;
+                display: flex !important;
+                justify-content: center !important;
             }
-            
-            .process-item.up .process-text-container,
-            .process-item.down .process-text-container {
+            .hero-logo-text {
                 position: relative !important;
-                top: auto !important;
-                bottom: auto !important;
-                left: auto !important;
-                right: auto !important;
                 transform: none !important;
-                width: 100% !important;
-                padding: 1rem 0 0 0 !important;
+                left: auto !important;
+                top: auto !important;
+                font-size: 32vw !important;
+                display: block !important;
                 text-align: center !important;
+                margin: 0 auto !important;
+            }
+            .hero-animated-words {
+                display: none !important; /* Remove Projetamos/Arquitetamos/Construimos on mobile */
             }
 
-            .process-number {
-                text-align: center !important;
+            /* Simplificação da secção 'Nosso Processo' no mobile */
+            .process-container {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 3rem !important;
+                align-items: stretch !important;
                 width: 100% !important;
-                display: block !important;
-                font-size: 4rem !important;
+                padding: 0 1.5rem !important;
+                box-sizing: border-box !important;
+            }
+            .process-item {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
                 position: relative !important;
-                left: 0 !important;
                 transform: none !important;
+                background: transparent !important;
+            }
+            .process-circle {
+                display: none !important; /* Hide complex circle images */
+            }
+            .process-arrow {
+                display: none !important; /* Hide arrows */
+            }
+            .process-item::after {
+                display: none !important; /* Hide vertical dividers */
+            }
+            .process-text-container {
+                position: relative !important;
+                top: auto !important;
+                bottom: auto !important;
+                left: auto !important;
+                right: auto !important;
+                transform: none !important;
+                width: 100% !important;
+                text-align: left !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .process-step-title {
+                font-family: "Clash Display", sans-serif !important;
+                font-size: 1.6rem !important;
+                font-weight: 700 !important;
+                color: var(--accent-primary) !important;
+                margin: 0 0 0.5rem 0 !important;
+                text-transform: uppercase !important;
+            }
+            .process-step-desc {
+                font-size: 1rem !important;
+                color: #cccccc !important;
+                line-height: 1.6 !important;
+                margin: 0 !important;
             }
 
             /* 4. Fullscreen & Sticky Sections */
-            .sticky-text-section,
             .fullscreen-section {
                 height: auto !important;
                 min-height: 50vh !important;
@@ -15141,10 +15170,400 @@
                 margin-top: 1rem !important;
             }
             
-            .sticky-text-container {
+            /* Sticky section for mobile "Cada cliente é único" scroll animation */
+        @media (max-width: 768px) {
+            /* Reset body background to black on mobile */
+            body, html, main, section, .sticky-text-section, .sobre-bdn-section, .sobre-bdn-layout, .sobre-bdn-content, .new-gallery-section, .aamp-gallery-section, .gallery-section, .contact-section {
+                background-color: #000000 !important;
+                background: #000000 !important;
+            }
+
+            /* Clean mobile top bar - no lines or shadows */
+            header {
+                height: 70px !important;
+                background: #000000 !important;
+                border-bottom: none !important;
+                box-shadow: none !important;
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                z-index: 9999 !important;
+            }
+
+            /* 1. Reset Grids */
+            .sobre-bdn-layout,
+            .partnership-info,
+            .process-steps-container {
+                grid-template-columns: 1fr !important;
+                gap: 2rem !important;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* 2. Typography */
+            h2, .section-title {
+                font-size: 2.2rem !important;
+            }
+            
+            /* Cut space from top of hero section and hide video canvas */
+            .hero-scroll-container {
+                height: 75vh !important;
+                min-height: 75vh !important;
+            }
+            .hero-sticky {
                 position: relative !important;
+                height: 75vh !important;
+                width: 100% !important;
+                background: #000000 !important;
+            }
+            #hero-video-canvas {
+                display: none !important;
+            }
+            .hero {
+                height: 75vh !important;
+                min-height: 75vh !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important; /* Centered vertically in viewport space */
+                background: #000000 !important;
+            }
+            .hero-content-original {
+                position: relative !important;
+                margin: 0 !important;
+                width: 100% !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+            }
+            .hero-logo-text {
+                position: relative !important;
+                transform: none !important;
+                left: auto !important;
+                top: auto !important;
+                font-size: 38vw !important; /* Made the BDN logo text larger */
+                display: block !important;
+                text-align: center !important;
+                margin: 0 auto !important;
+            }
+            .hero-animated-words {
+                display: none !important; /* Remove Projetamos/Arquitetamos/Construimos on mobile */
+            }
+
+            /* Simplificação da secção 'Nosso Processo' no mobile em formato de Cards interligados */
+            .process-container {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 0 !important; /* Controlled by arrows and cards */
+                align-items: stretch !important;
+                width: 100% !important;
+                padding: 0 1.5rem !important;
+                box-sizing: border-box !important;
+            }
+            .process-item {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                position: relative !important;
+                transform: none !important;
+                background-color: #0c0c0c !important; /* Elegant card background */
+                border: 2px solid var(--accent-primary) !important; /* Brutalist yellow border */
+                border-radius: 16px !important;
+                padding: 1.5rem 1.8rem !important;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+                box-sizing: border-box !important;
+            }
+            .process-circle {
+                display: none !important;
+            }
+            .process-arrow {
+                display: flex !important; /* Show arrow containers on mobile */
+                justify-content: center !important;
+                align-items: center !important;
+                height: 60px !important;
+                width: 100% !important;
+                margin: 0 !important;
+                position: relative !important;
+            }
+            .process-arrow svg {
+                display: none !important; /* Hide desktop diagonal vectors */
+            }
+            .process-arrow::after {
+                content: "↓" !important; /* Clean bold down arrow glyph */
+                font-family: "Clash Display", sans-serif !important;
+                color: var(--accent-primary) !important;
+                font-size: 2.2rem !important;
+                font-weight: 900 !important;
+                line-height: 1 !important;
+                animation: mobileArrowBounce 2s infinite ease-in-out !important;
+            }
+            @keyframes mobileArrowBounce {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(6px); }
+            }
+            .process-item::after {
+                display: none !important;
+            }
+            .process-text-container {
+                position: relative !important;
+                top: auto !important;
+                bottom: auto !important;
+                left: auto !important;
+                right: auto !important;
+                transform: none !important;
+                width: 100% !important;
+                text-align: left !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .process-step-title {
+                font-family: "Clash Display", sans-serif !important;
+                font-size: 1.5rem !important;
+                font-weight: 700 !important;
+                color: var(--accent-primary) !important;
+                margin: 0 0 0.8rem 0 !important;
+                text-transform: uppercase !important;
+                letter-spacing: 1px !important;
+            }
+            .process-step-desc {
+                font-size: 0.95rem !important;
+                color: #cccccc !important;
+                line-height: 1.6 !important;
+                margin: 0 !important;
+            }
+
+            /* 4. Fullscreen & Sticky Sections */
+            .fullscreen-section {
                 height: auto !important;
-                padding: 2rem 0 !important;
+                min-height: 50vh !important;
+                padding: 3rem 1rem !important;
+                margin-top: 1rem !important;
+            }
+            
+            /* Sticky section for mobile "Cada cliente é único" scroll animation */
+            .sticky-text-section {
+                height: 150vh !important;
+                position: relative !important;
+                width: 100vw !important;
+                margin-left: calc(-50vw + 50%) !important;
+                margin-right: calc(-50vw + 50%) !important;
+            }
+            .sticky-text-container {
+                position: sticky !important;
+                top: 0 !important;
+                height: 100vh !important;
+                width: 100vw !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                background-color: #000000 !important;
+                padding: 0 !important;
+            }
+            .fill-text-base {
+                font-size: 7.5vw !important; /* Larger and highly visible */
+                font-weight: 800 !important;
+                letter-spacing: 1px !important;
+                color: rgba(255, 255, 255, 0.25) !important; /* Brighter high contrast base */
+            }
+            #fill-text-active h2 {
+                color: #ffd700 !important; /* Explicitly yellow fill color */
+            }
+
+            /* Gallery centering & scaling, removal of strange overlays/shapes/arrows */
+            .new-gallery-container, .aamp-gallery-container {
+                grid-template-columns: 1fr !important;
+                padding: 2rem 1rem !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 2rem !important; /* PERFECT UNIFORM spacing controlled by gap */
+            }
+            .new-gallery-column, .aamp-gallery-column {
+                display: contents !important; /* Flat hierarchy to let all items share the same parent container */
+            }
+            .new-gallery-item, .aamp-gallery-item {
+                position: relative !important;
+                left: auto !important;
+                right: auto !important;
+                top: auto !important;
+                bottom: auto !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important; /* Override desktop height overrides */
+                min-height: auto !important;
+                margin: 0 !important; /* Margins completely removed to allow gap to function cleanly */
+                transform: none !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                float: none !important;
+                flex-direction: column !important;
+            }
+            
+            /* Apply explicit order on mobile so items display sequentially in DOM */
+            .new-gallery-item[data-order="1"], .aamp-gallery-item[data-order="1"] { order: 1 !important; }
+            .new-gallery-item[data-order="2"], .aamp-gallery-item[data-order="2"] { order: 2 !important; }
+            .new-gallery-item[data-order="3"], .aamp-gallery-item[data-order="3"] { order: 3 !important; }
+            .new-gallery-item[data-order="4"], .aamp-gallery-item[data-order="4"] { order: 4 !important; }
+            .new-gallery-item[data-order="5"], .aamp-gallery-item[data-order="5"] { order: 5 !important; }
+            .new-gallery-item[data-order="6"], .aamp-gallery-item[data-order="6"] { order: 6 !important; }
+            .new-gallery-img-wrap, .aamp-gallery-img-wrap {
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important; /* Override inline height: 100% */
+                margin: 0 !important;
+                aspect-ratio: 16/9 !important;
+                border-radius: 8px !important;
+                overflow: hidden !important;
+                clip-path: none !important;
+            }
+            .new-gallery-img, .aamp-gallery-img {
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover !important;
+            }
+            
+            /* Remove overlays, abstract CSS box grids and SVG arrows */
+            .new-gallery-overlay, .aamp-gallery-overlay {
+                display: none !important;
+            }
+            .new-gallery-section svg, .new-gallery-column svg {
+                display: none !important;
+            }
+            .new-gallery-item > div[style*="flex: 1; display: flex"] {
+                display: none !important;
+            }
+
+            /* Better mobile dropdown navbar look */
+            .mobile-dropdown {
+                background: #000000 !important;
+                border-bottom: 2px solid var(--accent-primary) !important;
+                padding: 3rem 2rem !important;
+                top: 70px !important;
+                z-index: 10000 !important;
+            }
+            .mobile-nav-list {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 2rem !important;
+                align-items: center !important;
+                list-style: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .mobile-nav-item {
+                width: 100% !important;
+                text-align: center !important;
+            }
+            .mobile-nav-link {
+                font-family: "Clash Display", sans-serif !important;
+                font-size: 1.8rem !important;
+                font-weight: 700 !important;
+                color: #ffffff !important;
+                text-decoration: none !important;
+                text-transform: uppercase !important;
+                letter-spacing: 2px !important;
+                transition: color 0.3s ease !important;
+            }
+            .mobile-nav-link:hover, .mobile-nav-link.active {
+                color: var(--accent-primary) !important;
+            }
+
+            /* Pinned selectors and controls positioned at opposite corners */
+            .logo-img {
+                width: 120px !important;
+                height: auto !important;
+            }
+            #language-selector {
+                position: fixed !important;
+                top: 15px !important;
+                bottom: auto !important;
+                left: auto !important;
+                right: 20px !important; /* Top right corner */
+                height: 38px !important;
+                box-sizing: border-box !important;
+                padding: 3px !important; /* Inset padding to align elements inside borders */
+                display: flex !important;
+                align-items: center !important;
+                background: #000000 !important;
+                border: 2px solid var(--accent-primary) !important;
+                border-radius: 20px !important;
+                z-index: 10002 !important;
+                overflow: hidden !important; /* Clip any children that overflow the border radius */
+            }
+            .language-btn {
+                height: 28px !important; /* Fits perfectly inside the 34px inner height */
+                padding: 0 10px !important;
+                font-size: 0.68rem !important;
+                border-radius: 14px !important; /* Pill shape inside container */
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                box-sizing: border-box !important;
+            }
+            .hamburger-menu {
+                position: fixed !important;
+                top: 15px !important; /* Same horizontal line */
+                left: 20px !important; /* Top left corner */
+                right: auto !important;
+                width: 38px !important; /* Equal size */
+                height: 38px !important;
+                box-sizing: border-box !important;
+                background: #000000 !important;
+                border: 2px solid var(--accent-primary) !important;
+                border-radius: 20px !important;
+                z-index: 10002 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            /* Center all page wrappers & containers to align content exactly in center */
+            .container {
+                max-width: 100% !important;
+                padding: 0 1rem !important;
+                margin: 0 auto !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+            }
+            .sobre-bdn-grid, .new-gallery-section, .aamp-gallery-section {
+                width: 100% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+            }
+            #cta-section {
+                display: none !important; /* Hide intermediate desktop CTA on mobile */
+            }
+            
+            /* Unify spacing around the categories section to match the 2rem image gap */
+            .target-categories-section {
+                padding: 5.5rem 0 1.5rem 0 !important; /* Shipped the buttons lower down */
+                background-color: #000000 !important;
+            }
+            #projetamos {
+                padding-bottom: 0 !important;
+            }
+            #projetamos .new-gallery-container {
+                padding-bottom: 0 !important;
+            }
+            #arquitetamos {
+                padding-top: 0 !important;
+            }
+            #arquitetamos .new-gallery-container {
+                padding-top: 0 !important;
             }
 
             /* 5. Contact FAB Button safe area */
@@ -15166,33 +15585,98 @@
             .section {
                 padding: 3rem 0 !important;
             }
+
+            /* Compact and clean mobile footer styles */
+            .unified-footer {
+                height: auto !important;
+                min-height: auto !important;
+                overflow: visible !important;
+                padding: 2rem 1.5rem 1rem 1.5rem !important; /* Compact padding */
+                margin-left: 0 !important;
+                width: 100% !important;
+                background-color: #000000 !important;
+            }
+            .uf-grid {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 1.5rem !important; /* Reduced gap between blocks */
+                padding: 0 !important;
+                height: auto !important;
+            }
+            .uf-shape-left, .uf-shape-right, .uf-block-yellow, .uf-block-grey {
+                display: none !important;
+            }
+            .uf-card-contacto, .uf-card-sede {
+                background-color: transparent !important; /* Transparent background */
+                color: #ffffff !important;
+                border: none !important; /* Removed borders for absolute simplicity */
+                border-radius: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                grid-column: auto !important;
+                grid-row: auto !important;
+                text-align: center !important;
+            }
+            .uf-card-contacto h4, .uf-card-sede h4 {
+                color: var(--accent-primary) !important;
+                font-size: 1.2rem !important; /* Balanced smaller size */
+                margin-bottom: 0.5rem !important;
+                font-family: "Clash Display", sans-serif !important;
+                font-weight: 700 !important;
+                letter-spacing: 1px !important;
+            }
+            .uf-card-contacto p, .uf-card-sede p {
+                color: #cccccc !important;
+                font-size: 0.88rem !important; /* Smaller, cleaner font size */
+                line-height: 1.5 !important;
+                margin-bottom: 0.3rem !important;
+                font-weight: 400 !important;
+            }
+            .uf-right-panel {
+                padding: 0 !important;
+                align-items: center !important;
+                text-align: center !important;
+                gap: 0.8rem !important;
+                grid-column: auto !important;
+                grid-row: auto !important;
+            }
+            .uf-right-panel h4 {
+                display: none !important; /* Hide duplicate CONTACTO title above socials */
+            }
+            .uf-socials {
+                flex-direction: row !important; /* Side-by-side socials */
+                justify-content: center !important;
+                gap: 1.5rem !important;
+                margin: 0.5rem 0 !important;
+            }
+            .uf-socials li {
+                gap: 0.5rem !important;
+                font-size: 0.85rem !important;
+                color: #cccccc !important;
+            }
+            .uf-socials svg {
+                stroke: var(--accent-primary) !important; /* Match brand yellow */
+            }
+            .uf-title-big {
+                font-size: 2.2rem !important; /* More compact brand name */
+                line-height: 1.1 !important;
+                text-align: center !important;
+                margin: 1rem 0 !important;
+            }
+            .uf-bottom-bar {
+                padding: 1rem 0 !important;
+                flex-direction: column !important;
+                gap: 0.5rem !important;
+                text-align: center !important;
+                border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+                background-color: #000000 !important;
+                font-size: 0.78rem !important;
+            }
         }
     </style>
 
-    <button class="fab-contact-btn" id="fabContactBtn" data-translate="contact_lets_talk_btn" onclick="document.getElementById('contactModal').classList.add('active'); document.body.style.overflow='hidden';">
-        INICIE O SEU PROJETO
-    </button>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-                gsap.registerPlugin(ScrollTrigger);
-
-                const fabBtn = document.getElementById('fabContactBtn');
-                const workflowSection = document.querySelector('.workflow-section');
-
-                if (fabBtn && workflowSection) {
-                    ScrollTrigger.create({
-                        trigger: workflowSection,
-                        start: "top center",
-                        end: "max",
-                        onEnter: () => fabBtn.classList.add('visible'),
-                        onLeaveBack: () => fabBtn.classList.remove('visible')
-                    });
-                }
-            }
-        });
-    </script>
 
     <script src="bdn_masonry.js"></script>
 </body>
