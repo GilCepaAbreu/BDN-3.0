@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body { margin: 0; padding: 0; }
+.hero {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: #333;
+    overflow: hidden;
+}
+#hero-content-original {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    overflow: hidden;
+}
+.hero-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+.hero-logo-text {
+    font-family: sans-serif;
+    font-weight: 900;
+    font-size: 25vw;
+    line-height: 0.9;
+    letter-spacing: 4.5vw;
+    text-transform: uppercase;
+    color: yellow;
+    margin: 0;
+    white-space: nowrap;
+}
+</style>
+</head>
+<body>
+<div class="hero">
+    <div id="hero-content-original">
+        <div class="hero-logo">
+            <h1 class="hero-logo-text">BDN</h1>
+        </div>
+    </div>
+</div>
+</body>
+</html>

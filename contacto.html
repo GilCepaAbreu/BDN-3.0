@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>BDN - Contacto</title>
+    <link rel="icon" type="image/png" href="bdn_fabicon.png">
+    <link rel="shortcut icon" type="image/png" href="bdn_fabicon.png">
+    <link rel="apple-touch-icon" href="bdn_fabicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        :root {
+            --bg-page: #0a0a0a; /* BDN Brand Black */
+            --text-main: #ffffff; /* White */
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --accent-color: #fccb06; /* BDN Brand Yellow */
+            --accent-hover: #e0b505;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --error-color: #ff3344;
+        }
+
+        body, html {
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            height: 100vh;
+            overflow: hidden; /* Fits everything completely inside viewport height */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Loading Screen styles */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000000;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader-logo-wrap {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .loader-logo-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90px;
+            height: 90px;
+            background: radial-gradient(circle, rgba(252, 203, 6, 0.25) 0%, rgba(252, 203, 6, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(5px);
+        }
+
+        .loader-bar-bg {
+            width: 160px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loader-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--accent-color);
+            position: absolute;
+            left: 0;
+            top: 0;
+            box-shadow: 0 0 8px var(--accent-color);
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 16px;
+            height: 16px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.1s ease, background-color 0.3s ease;
+            box-shadow: 0 0 15px rgba(252, 203, 6, 0.4);
+            opacity: 0; /* Hidden during loader */
+        }
+
+        .custom-cursor.hover {
+            transform: scale(2);
+            background-color: transparent;
+            border: 2px solid var(--accent-color);
+        }
+
+        /* Split Screen Container */
+        .split-container {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            width: 100vw;
+            height: 100vh;
+            opacity: 0; /* Keep hidden until loader finishes */
+        }
+
+        /* Left side: Project Image */
+        .split-image {
+            background-image: url('imagens/img6.png');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            transform: scale(1.15); /* For entry zoom animation */
+        }
+
+        /* Right side: Form (Perfect Viewport Fit) */
+        .split-form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem max(2rem, 6vw);
+            height: 100vh;
+            position: relative;
+            background-color: var(--bg-page);
+            overflow-y: auto; /* Fallback for small screens */
+        }
+
+        /* Header Logo Favicon */
+        .form-header-logo {
+            position: absolute;
+            top: 2rem;
+            left: max(2rem, 6vw);
+            z-index: 99;
+        }
+
+        .logo-btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+        }
+
+        .logo-btn:hover {
+            transform: scale(1.08) rotate(15deg);
+            border-color: var(--accent-color);
+        }
+
+        .logo-btn img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        /* Form Content */
+        .form-content-inner {
+            max-width: 540px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .form-intro {
+            margin-bottom: 2rem;
+        }
+
+        .intro-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2rem, 3.5vw, 2.8rem);
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .intro-subtitle {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Inputs (Compact minimalist lines only) */
+        .form-group {
+            margin-bottom: 1.2rem; /* Compact margin */
+            position: relative;
+        }
+
+        .form-label {
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .required-star {
+            color: var(--accent-color);
+            margin-left: 2px;
+        }
+
+        .form-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.6rem 0;
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 400;
+            outline: none;
+            transition: border-bottom-color 0.3s ease;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Interactive Underline Animation */
+        .form-group::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateX(-50%);
+        }
+
+        .form-group:focus-within::after {
+            width: 100%;
+        }
+
+        /* Select styling */
+        select.form-input {
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: none;
+        }
+
+        select.form-input option {
+            background-color: var(--bg-page);
+            color: var(--text-main);
+        }
+
+        .select-wrapper::after {
+            content: '↓';
+            position: absolute;
+            right: 0;
+            bottom: 0.6rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        textarea.form-input {
+            height: 70px; /* Reduced height to fit viewport */
+            resize: none;
+        }
+
+        /* Errors */
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.72rem;
+            font-weight: 600;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        .form-group.has-error .form-input {
+            border-bottom-color: var(--error-color) !important;
+        }
+
+        .form-group.has-error::after {
+            background-color: var(--error-color) !important;
+        }
+
+        .form-group.has-error .error-message {
+            display: block;
+        }
+
+        /* Submit Button with Arrow */
+        .submit-btn-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 1.2rem;
+        }
+
+        .submit-btn {
+            background-color: var(--accent-color);
+            color: #000; /* Black text on Yellow */
+            border: none;
+            border-radius: 30px;
+            padding: 0.9rem 2rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 15px rgba(252, 203, 6, 0.2);
+        }
+
+        .submit-btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(252, 203, 6, 0.4);
+        }
+
+        .submit-btn-arrow {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        .submit-btn:hover .submit-btn-arrow {
+            transform: translate(2px, -2px);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .back-btn:hover {
+            color: var(--accent-color);
+            transform: translateX(-4px);
+        }
+
+        /* Success screen layout */
+        .success-message {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .success-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 25px rgba(252, 203, 6, 0.3);
+        }
+
+        .success-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 0.8rem;
+        }
+
+        .success-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 1.8rem;
+            max-width: 400px;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Language Toggle Pill */
+        .language-toggle {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            z-index: 1001;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            padding: 4px;
+            display: flex;
+            gap: 2px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            opacity: 0; /* Animates in after load */
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 0.7rem;
+            padding: 5px 10px;
+            border-radius: 30px;
+            cursor: none;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background-color: var(--accent-color);
+            color: #000;
+        }
+
+        /* Responsive Layouts */
+        @media (max-width: 1024px) {
+            body, html {
+                height: auto;
+                overflow: auto;
+            }
+            .split-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            .split-image {
+                display: none;
+            }
+            .split-form {
+                padding-top: 8rem;
+                padding-bottom: 6rem;
+                height: auto;
+            }
+            .language-toggle {
+                bottom: 2rem;
+                left: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loading Screen Component -->
+    <div id="loading-screen">
+        <div class="loader-logo-wrap">
+            <div class="loader-logo-glow"></div>
+            <img src="bdn_fabicon.png" alt="BDN Logo" id="loaderLogo" style="width: 54px; height: 54px; filter: drop-shadow(0 0 12px rgba(252, 203, 6, 0.5)); transform: scale(0.6); opacity: 0;">
+        </div>
+        <div class="loader-bar-bg" id="loaderBarBg" style="opacity: 0; transform: translateY(10px);">
+            <div class="loader-bar-fill" id="loaderBarFill"></div>
+        </div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor" id="customCursor"></div>
+
+    <!-- Split Screen Container -->
+    <div class="split-container" id="mainContainer">
+        <!-- Left: Image -->
+        <div class="split-image"></div>
+
+        <!-- Right: Form -->
+        <div class="split-form">
+            <!-- Header Logo Favicon -->
+            <div class="form-header-logo">
+                <a href="index.html" class="logo-btn target-cursor-hover" id="logoLink">
+                    <img src="bdn_fabicon.png" alt="BDN">
+                </a>
+            </div>
+
+            <!-- Form Content -->
+            <div class="form-content-inner">
+                <!-- Form State -->
+                <div id="formContainer">
+                    <div class="form-intro">
+                        <h1 class="intro-title" data-translate="contact_form_title">Envie-nos uma Mensagem</h1>
+                        <p class="intro-subtitle" data-translate="contact_subtitle">Estamos aqui para transformar as suas ideias em realidade</p>
+                    </div>
+
+                    <form id="contactForm" novalidate>
+                        <div class="form-group">
+                            <span class="form-label" data-translate="form_name">Nome completo <span class="required-star">*</span></span>
+                            <input type="text" id="fullName" name="fullName" class="form-input" placeholder="O seu nome completo" data-translate-placeholder="form_name_placeholder" required />
+                            <div class="error-message" data-translate="form_name_error">
+                                Por favor, insira o seu nome completo.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <span class="form-label" data-translate="form_email">Endereço de email <span class="required-star">*</span></span>
+                            <input type="email" id="email" name="email" class="form-input" placeholder="Endereço de email" data-translate-placeholder="form_email_placeholder" required />
+                            <div class="error-message" data-translate="form_email_error">
+                                Por favor, insira um endereço de email válido.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <span class="form-label" data-translate="form_company">Empresa <span class="required-star">*</span></span>
+                            <input type="text" id="company" name="company" class="form-input" placeholder="Nome da empresa" data-translate-placeholder="form_company_placeholder" required />
+                            <div class="error-message" data-translate="form_company_error">
+                                Por favor, insira o nome da empresa.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <span class="form-label" data-translate="form_phone">Número de telemóvel <span class="required-star">*</span></span>
+                            <input type="tel" id="phone" name="phone" class="form-input" placeholder="+351 - O seu número de telemóvel" data-translate-placeholder="form_phone_placeholder" required />
+                            <div class="error-message" data-translate="form_phone_error">
+                                Por favor, insira um número de telemóvel válido.
+                            </div>
+                        </div>
+
+                        <div class="form-group select-wrapper">
+                            <span class="form-label" data-translate="form_enquiry_type">Tipo de consulta <span class="required-star">*</span></span>
+                            <select id="enquiryType" name="enquiryType" class="form-input" required>
+                                <option value="" disabled selected data-translate="form_enquiry_default">Por favor selecione...</option>
+                                <option value="design" data-translate="form_enquiry_design">Projetar</option>
+                                <option value="architect" data-translate="form_enquiry_architecture">Arquitetar</option>
+                                <option value="build" data-translate="form_enquiry_build">Construir</option>
+                                <option value="other" data-translate="form_enquiry_other">Outro</option>
+                            </select>
+                            <div class="error-message" data-translate="form_enquiry_error">
+                                Por favor, selecione o tipo de consulta.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <span class="form-label" data-translate="form_message">Mensagem <span class="required-star">*</span></span>
+                            <textarea id="message" name="message" class="form-input" placeholder="Escreva a sua mensagem" data-translate-placeholder="form_message_placeholder" required></textarea>
+                            <div class="error-message" data-translate="form_message_error">
+                                Por favor, escreva a sua mensagem.
+                            </div>
+                        </div>
+
+                        <div class="submit-btn-wrap">
+                            <button type="submit" class="submit-btn target-cursor-hover" id="submitButton">
+                                <span data-translate="form_submit">Enviar mensagem</span>
+                                <span class="submit-btn-arrow">↗</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Success State -->
+                <div class="success-message" id="successContainer">
+                    <div class="success-circle">✓</div>
+                    <h2 class="success-title" data-translate="form_success_title">Obrigado!</h2>
+                    <p class="success-text" data-translate="form_success_desc">Mensagem enviada com sucesso! Entraremos em contacto consigo brevemente.</p>
+                    <a href="index.html" class="submit-btn target-cursor-hover" style="text-decoration: none;">
+                        <span data-translate="back_to_site">Voltar ao site</span>
+                        <span class="submit-btn-arrow">↗</span>
+                    </a>
+                </div>
+
+                <div style="text-align: left;">
+                    <a href="index.html" class="back-btn target-cursor-hover" data-translate="back_to_site">
+                        <span>←</span> Voltar ao site
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Selector Floating -->
+    <div class="language-toggle" id="langToggle">
+        <button class="lang-btn active target-cursor-hover" id="lang-pt">PT</button>
+        <button class="lang-btn target-cursor-hover" id="lang-en">EN</button>
+    </div>
+
+    <script>
+        // Custom Cursor Movement
+        const cursor = document.getElementById('customCursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 8 + 'px';
+            cursor.style.top = e.clientY - 8 + 'px';
+        });
+
+        // Add hover effects for target-cursor-hover
+        function updateHoverListeners() {
+            const hovers = document.querySelectorAll('.target-cursor-hover');
+            hovers.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+            });
+        }
+        updateHoverListeners();
+
+        // GSAP Timeline for Loading Screen and Entrance
+        window.addEventListener('load', () => {
+            const loadTimeline = gsap.timeline();
+
+            // 1. Initial fade-in of loader elements
+            loadTimeline.to('#loaderLogo', {
+                duration: 0.6,
+                scale: 1,
+                opacity: 1,
+                ease: 'back.out(1.7)'
+            });
+            loadTimeline.to('#loaderBarBg', {
+                duration: 0.4,
+                y: 0,
+                opacity: 1,
+                ease: 'power2.out'
+            }, '-=0.3');
+
+            // 2. Animate the progress bar fill
+            loadTimeline.to('#loaderBarFill', {
+                duration: 1.2,
+                width: '100%',
+                ease: 'power3.inOut'
+            });
+
+            // 3. Exit loading screen (Scale down logo, fade out loader container)
+            loadTimeline.to('#loaderLogo', {
+                duration: 0.4,
+                scale: 0.7,
+                opacity: 0,
+                ease: 'power3.in'
+            });
+            loadTimeline.to('#loading-screen', {
+                duration: 0.6,
+                yPercent: -100, // Slide loader up curtain-style
+                ease: 'power4.inOut'
+            }, '-=0.1');
+
+            // 4. Reveal page container & start entrance animations
+            loadTimeline.set('#mainContainer', { opacity: 1 }, '-=0.3');
+            loadTimeline.set('#customCursor', { opacity: 1 }, '-=0.3');
+
+            // Left Image Reveal & Zoom Out
+            loadTimeline.fromTo('.split-image', {
+                scale: 1.2,
+                clipPath: 'inset(100% 0 0 0)' // Curtain open effect
+            }, {
+                duration: 1.5,
+                scale: 1,
+                clipPath: 'inset(0% 0 0 0)',
+                ease: 'power4.out'
+            }, '-=0.3');
+
+            // Right Form Elements sequential entrance
+            loadTimeline.from('.form-header-logo', {
+                duration: 0.8,
+                y: -30,
+                opacity: 0,
+                ease: 'power3.out'
+            }, '-=1.0');
+
+            loadTimeline.from('.form-intro > *', {
+                duration: 0.9,
+                y: 25,
+                opacity: 0,
+                stagger: 0.12,
+                ease: 'power3.out'
+            }, '-=0.8');
+
+            loadTimeline.from('.form-group', {
+                duration: 0.8,
+                y: 20,
+                opacity: 0,
+                stagger: 0.08,
+                ease: 'power3.out'
+            }, '-=0.7');
+
+            loadTimeline.from('.submit-btn-wrap, .back-btn', {
+                duration: 0.8,
+                y: 15,
+                opacity: 0,
+                stagger: 0.1,
+                ease: 'power3.out'
+            }, '-=0.6');
+
+            // Fade in Language switch pill
+            loadTimeline.to('#langToggle', {
+                duration: 0.5,
+                opacity: 1,
+                ease: 'power2.out'
+            }, '-=0.4');
+        });
+
+        // Translation Engine
+        const translations = {
+            pt: {
+                contact_form_title: "Envie-nos uma Mensagem",
+                contact_subtitle: "Estamos aqui para transformar as suas ideias em realidade",
+                form_name: "Nome completo",
+                form_name_placeholder: "O seu nome completo",
+                form_name_error: "Por favor, insira o seu nome completo.",
+                form_email: "Endereço de email",
+                form_email_placeholder: "Endereço de email",
+                form_email_error: "Por favor, insira um endereço de email válido.",
+                form_company: "Empresa",
+                form_company_placeholder: "Nome da empresa",
+                form_company_error: "Por favor, insira o nome da empresa.",
+                form_phone: "Número de telemóvel",
+                form_phone_placeholder: "+351 - O seu número de telemóvel",
+                form_phone_error: "Por favor, insira um número de telemóvel válido.",
+                form_enquiry_type: "Tipo de consulta",
+                form_enquiry_default: "Por favor selecione...",
+                form_enquiry_design: "Projetar",
+                form_enquiry_architecture: "Arquitetar",
+                form_enquiry_build: "Construir",
+                form_enquiry_other: "Outro",
+                form_enquiry_error: "Por favor, selecione o tipo de consulta.",
+                form_message: "Mensagem",
+                form_message_placeholder: "Escreva a sua mensagem",
+                form_message_error: "Por favor, escreva a sua mensagem.",
+                form_submit: "Enviar mensagem",
+                back_to_site: "Voltar ao site",
+                form_success_title: "Obrigado!",
+                form_success_desc: "Mensagem enviada com sucesso! Entraremos em contacto consigo brevemente."
+            },
+            en: {
+                contact_form_title: "Send us a Message",
+                contact_subtitle: "We are here to turn your ideas into reality",
+                form_name: "Full name",
+                form_name_placeholder: "Your full name",
+                form_name_error: "Please enter your full name.",
+                form_email: "Email address",
+                form_email_placeholder: "Email address",
+                form_email_error: "Please enter a valid email address.",
+                form_company: "Company",
+                form_company_placeholder: "Company name",
+                form_company_error: "Please enter your company name.",
+                form_phone: "Phone number",
+                form_phone_placeholder: "+351 - Your phone number",
+                form_phone_error: "Please enter a valid phone number.",
+                form_enquiry_type: "Enquiry type",
+                form_enquiry_default: "Please select...",
+                form_enquiry_design: "Design",
+                form_enquiry_architecture: "Architect",
+                form_enquiry_build: "Build",
+                form_enquiry_other: "Other",
+                form_enquiry_error: "Please select an enquiry type.",
+                form_message: "Message",
+                form_message_placeholder: "Write your message",
+                form_message_error: "Please write your message.",
+                form_submit: "Send message",
+                back_to_site: "Back to home",
+                form_success_title: "Thank You!",
+                form_success_desc: "Message sent successfully! We will get in touch with you shortly."
+            }
+        };
+
+        let currentLang = localStorage.getItem('bdn_language') || 'pt';
+
+        function updateLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('bdn_language', lang);
+            
+            document.getElementById('lang-pt').classList.toggle('active', lang === 'pt');
+            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+            
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.getAttribute('data-translate');
+                if (translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            document.querySelectorAll('[data-translate-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-translate-placeholder');
+                if (translations[lang][key]) {
+                    el.setAttribute('placeholder', translations[lang][key]);
+                }
+            });
+        }
+
+        // Initialize language
+        updateLanguage(currentLang);
+
+        document.getElementById('lang-pt').addEventListener('click', () => updateLanguage('pt'));
+        document.getElementById('lang-en').addEventListener('click', () => updateLanguage('en'));
+
+        // Form Validation & Submission
+        const form = document.getElementById('contactForm');
+        const formContainer = document.getElementById('formContainer');
+        const successContainer = document.getElementById('successContainer');
+
+        function showError(input) {
+            input.parentElement.classList.add('has-error');
+        }
+
+        function clearError(input) {
+            input.parentElement.classList.remove('has-error');
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let isValid = true;
+
+            const fullName = document.getElementById('fullName');
+            const email = document.getElementById('email');
+            const company = document.getElementById('company');
+            const phone = document.getElementById('phone');
+            const enquiryType = document.getElementById('enquiryType');
+            const message = document.getElementById('message');
+
+            // Name
+            if (!fullName.value.trim()) {
+                showError(fullName);
+                isValid = false;
+            } else {
+                clearError(fullName);
+            }
+
+            // Email
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email.value.trim())) {
+                showError(email);
+                isValid = false;
+            } else {
+                clearError(email);
+            }
+
+            // Company
+            if (!company.value.trim()) {
+                showError(company);
+                isValid = false;
+            } else {
+                clearError(company);
+            }
+
+            // Phone
+            if (!phone.value.trim() || phone.value.trim().length < 9) {
+                showError(phone);
+                isValid = false;
+            } else {
+                clearError(phone);
+            }
+
+            // Enquiry Type
+            if (!enquiryType.value) {
+                showError(enquiryType);
+                isValid = false;
+            } else {
+                clearError(enquiryType);
+            }
+
+            // Message
+            if (!message.value.trim()) {
+                showError(message);
+                isValid = false;
+            } else {
+                clearError(message);
+            }
+
+            if (isValid) {
+                formContainer.style.display = 'none';
+                successContainer.style.display = 'flex';
+            }
+        });
+
+        // Clear error on input
+        form.querySelectorAll('input, textarea, select').forEach(input => {
+            input.addEventListener('input', () => clearError(input));
+            input.addEventListener('change', () => clearError(input));
+        });
+    </script>
+</body>
+
+</html>
