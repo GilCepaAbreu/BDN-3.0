@@ -9651,6 +9651,19 @@
     <!-- Chroma Grid Gallery -->
     <link rel="stylesheet" href="chroma_grid.css" />
     <script src="chroma_grid.js"></script>
+    <script>
+        // Force page scroll to top on reload
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+        window.addEventListener('DOMContentLoaded', () => {
+            window.scrollTo(0, 0);
+        });
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
+        });
+    </script>
 </head>
 
 <body id="home">

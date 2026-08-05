@@ -1,0 +1,8 @@
+*.py
+*.pyc
+__pycache__/
+*.bak
+*.bak2
+*.backup*
+nohup.out
+test_screenshot.png
