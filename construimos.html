@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>BDN - Construímos</title>
+    <link rel="icon" type="image/png" href="bdn_fabicon.png">
+    <link rel="shortcut icon" type="image/png" href="bdn_fabicon.png">
+    <link rel="apple-touch-icon" href="bdn_fabicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        :root {
+            --bg-page: #0a0a0a; /* BDN Brand Black */
+            --text-main: #ffffff; /* White */
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --accent-color: #fccb06; /* BDN Brand Yellow */
+            --accent-hover: #e0b505;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body, html {
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Loading Screen styles */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000000;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader-logo-wrap {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .loader-logo-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90px;
+            height: 90px;
+            background: radial-gradient(circle, rgba(252, 203, 6, 0.25) 0%, rgba(252, 203, 6, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(5px);
+        }
+
+        .loader-bar-bg {
+            width: 160px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loader-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--accent-color);
+            position: absolute;
+            left: 0;
+            top: 0;
+            box-shadow: 0 0 8px var(--accent-color);
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 16px;
+            height: 16px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            mix-blend-mode: difference;
+        }
+
+        .custom-cursor.hovered {
+            width: 24px;
+            height: 24px;
+            background-color: #ffffff;
+            mix-blend-mode: difference;
+        }
+
+        /* Navigation Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px clamp(20px, 5vw, 60px);
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent;
+            pointer-events: none;
+        }
+
+        .header-favicon {
+            pointer-events: auto;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .header-favicon:hover {
+            transform: scale(1.1);
+        }
+
+        .header-favicon img {
+            width: 32px;
+            height: 32px;
+            display: block;
+        }
+
+        /* Hero Section */
+        .sobre-hero {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-image: url('imagens/inicial.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .sobre-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.85) 100%);
+            z-index: 1;
+        }
+
+        .hero-img-wrap {
+            position: relative;
+            z-index: 2;
+            max-width: clamp(560px, 85vw, 1700px);
+            max-height: 85vh;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            transform: scale(0.9);
+            opacity: 0;
+        }
+
+        .hero-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Grid Layout Section */
+        .sobre-grid-section {
+            background-color: var(--bg-page);
+            width: 100%;
+            border-top: 1px solid var(--border-color);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Row structure */
+        .sobre-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid var(--border-color);
+            min-height: 80vh;
+        }
+
+        .sobre-col-left {
+            border-right: 1px solid var(--border-color);
+            padding: clamp(2rem, 5vw, 5rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sobre-col-right {
+            padding: clamp(2rem, 5vw, 5rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        /* Labels and titles */
+        .col-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .col-header span:first-child {
+            color: var(--accent-color);
+        }
+
+        .section-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2rem;
+        }
+
+        .section-quote {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2.8rem);
+            font-weight: 700;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            margin-bottom: 2.5rem;
+            line-height: 1.2;
+        }
+
+        .section-desc-main {
+            font-size: clamp(1.1rem, 1.8vw, 1.8rem);
+            line-height: 1.4;
+            font-weight: 300;
+            color: var(--text-main);
+        }
+
+        .section-desc-secondary {
+            font-size: clamp(0.95rem, 1.1vw, 1.25rem);
+            line-height: 1.6;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* Image Containers inside columns */
+        .col-image-wrap {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .col-image-wrap img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            filter: grayscale(20%);
+            transition: filter 0.5s ease, transform 0.5s ease;
+        }
+
+        .col-image-wrap:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.03);
+        }
+
+        /* Language Selector Floating */
+        .language-toggle {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--border-color);
+            padding: 4px;
+            border-radius: 20px;
+            display: flex;
+            gap: 2px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            pointer-events: auto;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 8px 14px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: var(--accent-color);
+            color: #000000;
+        }
+
+        /* Scroll indicator */
+        .scroll-down-indicator {
+            position: absolute;
+            bottom: 30px;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .scroll-arrow {
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, var(--accent-color), transparent);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-arrow::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            background: #ffffff;
+            animation: scrollMove 2s infinite ease-in-out;
+        }
+
+        @keyframes scrollMove {
+            0% { transform: translateY(-100%); }
+            80% { transform: translateY(350%); }
+            100% { transform: translateY(350%); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .sobre-row {
+                grid-template-columns: 1fr;
+            }
+
+            .sobre-col-left {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .sobre-col-right {
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Custom Cursor -->
+    <div class="custom-cursor" id="customCursor"></div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader-logo-wrap">
+            <div class="loader-logo-glow"></div>
+            <img src="bdn_fabicon.png" alt="BDN Logo" id="loaderLogo" style="width: 54px; height: 54px; filter: drop-shadow(0 0 12px rgba(252, 203, 6, 0.5)); transform: scale(0.6); opacity: 0;">
+        </div>
+        <div class="loader-bar-bg">
+            <div class="loader-bar-fill" id="loaderFill"></div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header>
+        <a href="index.html" class="header-favicon target-cursor-hover" id="logoLink">
+            <img src="bdn_fabicon.png" alt="BDN">
+        </a>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="sobre-hero">
+        <div class="hero-img-wrap" id="heroImg">
+            <img src="imagens/construimos_hero.png" alt="BDN Construímos">
+        </div>
+        
+        <div class="scroll-down-indicator">
+            <span data-translate="scroll_explore">Scroll para explorar</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Content Sections Grid -->
+    <main class="sobre-grid-section">
+        <!-- Row 1: Construction -->
+        <div class="sobre-row">
+            <!-- Left Column: Intro -->
+            <div class="sobre-col-left">
+                <div>
+                    <div class="col-header">
+                        <span>BDN</span>
+                        <span data-translate="label_intro">01-CONSTRUÇÃO</span>
+                    </div>
+                    <h2 class="section-title" data-translate="about_us_title">Construímos</h2>
+                    <p class="section-quote">"Each client is unique"</p>
+                </div>
+                <p class="section-desc-main" data-translate="about_desc_main">
+                    Transformamos sonhos em realidade através da nossa experiência em construção de alta qualidade.
+                </p>
+            </div>
+            
+            <!-- Right Column: Details & Build Image -->
+            <div class="sobre-col-right">
+                <div class="col-image-wrap">
+                    <img src="imagens/construimos_hero.png" alt="BDN Construction Process">
+                </div>
+                <p class="section-desc-secondary" data-translate="about_desc_secondary">
+                    Desde as fundações até aos acabamentos finais, cada detalhe é cuidadosamente executado para garantir a máxima qualidade e durabilidade. Trabalhamos com elevados padrões em todos os processos.
+                </p>
+            </div>
+        </div>
+
+        <!-- Row 2: Features -->
+        <div class="sobre-row">
+            <!-- Left Column: Details Image -->
+            <div class="sobre-col-left">
+                <div>
+                    <div class="col-header">
+                        <span>BDN</span>
+                        <span data-translate="label_approach">02-QUALIDADE</span>
+                    </div>
+                    <h2 class="section-title" data-translate="approach_title">Obra & Materiais</h2>
+                </div>
+                <div class="col-image-wrap" style="margin-top: 2rem; margin-bottom: 0;">
+                    <img src="imagens/img6.png" alt="BDN Concrete and materials">
+                </div>
+            </div>
+            
+            <!-- Right Column: Details Text -->
+            <div class="sobre-col-right" style="justify-content: center; gap: 4rem;">
+                <p class="section-desc-main" data-translate="approach_desc_main">
+                    Gestão de obra eficiente e acompanhamento total do projeto desde o início, assegurando total tranquilidade.
+                </p>
+                <p class="section-desc-secondary" data-translate="approach_desc_secondary">
+                    Usamos materiais sustentáveis ecológicos com certificações internacionais de topo. A nossa dedicação na engenharia e no controlo garante o cumprimento rigoroso dos prazos, com acabamentos premium de excelência.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Language Selector Floating -->
+    <div class="language-toggle" id="langToggle">
+        <button class="lang-btn active target-cursor-hover" id="lang-pt">PT</button>
+        <button class="lang-btn target-cursor-hover" id="lang-en">EN</button>
+    </div>
+
+    <script>
+        // Custom Cursor Movement
+        const cursor = document.getElementById('customCursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Add hover effects for target-cursor-hover elements
+        function updateHoverListeners() {
+            const hovers = document.querySelectorAll('.target-cursor-hover, a, button, .col-image-wrap');
+            hovers.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            });
+        }
+        updateHoverListeners();
+
+        // GSAP Loading and Page Animations
+        window.addEventListener("load", function () {
+            const fill = document.getElementById("loaderFill");
+            const loader = document.getElementById("loading-screen");
+            const logo = document.getElementById("loaderLogo");
+            
+            const loadTimeline = gsap.timeline();
+
+            // 1. Initial fade-in of logo
+            loadTimeline.to(logo, {
+                opacity: 1,
+                scale: 1,
+                duration: 0.8,
+                ease: "power2.out"
+            });
+
+            // 2. Animate progress bar fill to 100%
+            loadTimeline.to(fill, {
+                width: "100%",
+                duration: 1.2,
+                ease: "power1.inOut"
+            }, "-=0.3");
+
+            // 3. Exit loading screen
+            loadTimeline.to(logo, {
+                scale: 0.8,
+                opacity: 0,
+                duration: 0.3,
+                ease: "power2.in"
+            });
+
+            loadTimeline.to(loader, {
+                yPercent: -100,
+                duration: 0.8,
+                ease: "power3.inOut"
+            }, "-=0.1");
+
+            // 4. Hero content entry animation
+            loadTimeline.to("#heroImg", {
+                opacity: 1,
+                scale: 1,
+                duration: 1.5,
+                ease: "power3.out"
+            }, "-=0.3");
+        });
+
+        // Translation Data
+        const translations = {
+            pt: {
+                label_intro: "01-CONSTRUÇÃO",
+                about_us_title: "Construímos",
+                about_desc_main: "Transformamos sonhos em realidade através da nossa experiência em construção de alta qualidade.",
+                about_desc_secondary: "Desde as fundações até aos acabamentos finais, cada detalhe é cuidadosamente executado para garantir a máxima qualidade e durabilidade. Trabalhamos com elevados padrões em todos os processos.",
+                label_approach: "02-QUALIDADE",
+                approach_title: "Obra & Materiais",
+                approach_desc_main: "Gestão de obra eficiente e acompanhamento total do projeto desde o início, assegurando total tranquilidade.",
+                approach_desc_secondary: "Usamos materiais sustentáveis ecológicos com certificações internacionais de topo. A nossa dedicação na engenharia e no controlo garante o cumprimento rigoroso dos prazos, com acabamentos premium de excelência.",
+                scroll_explore: "Scroll para explorar"
+            },
+            en: {
+                label_intro: "01-CONSTRUCTION",
+                about_us_title: "We Build",
+                about_desc_main: "We transform dreams into reality through our experience in high-quality construction.",
+                about_desc_secondary: "From foundations to final finishes, every detail is carefully executed to ensure maximum quality and durability. We work with high standards in all processes.",
+                label_approach: "02-QUALITY",
+                approach_title: "Build & Materials",
+                approach_desc_main: "Efficient project management and complete monitoring from the beginning, ensuring complete peace of mind.",
+                approach_desc_secondary: "We use ecological sustainable materials with top international certifications. Our dedication in engineering and control guarantees strict compliance with deadlines, with premium quality finishes.",
+                scroll_explore: "Scroll to explore"
+            }
+        };
+
+        // Language Switcher Logic
+        let currentLang = localStorage.getItem('bdn_lang') || 'pt';
+        
+        function applyLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('bdn_lang', lang);
+            
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+
+            // Update toggle buttons active state
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`lang-${lang}`).classList.add('active');
+            
+            // Adjust title based on language
+            document.title = lang === 'pt' ? 'BDN - Construímos' : 'BDN - We Build';
+        }
+
+        // Add Toggle Listeners
+        document.getElementById('lang-pt').addEventListener('click', () => applyLanguage('pt'));
+        document.getElementById('lang-en').addEventListener('click', () => applyLanguage('en'));
+
+        // Initialize translations
+        applyLanguage(currentLang);
+    </script>
+</body>
+
+</html>
